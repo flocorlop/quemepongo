@@ -2,29 +2,29 @@ import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 
 const routes: Routes = [
-  { path: "", redirectTo: "places", pathMatch: "full" },
+  { path: "", redirectTo: "outfits", pathMatch: "full" },
   {
-    path: "places",
+    path: "outfits",
     children: [
       {
         path: "",
         loadChildren: () =>
-          import("./places/places.module").then(m => m.PlacesPageModule)
+          import("./outfits/outfits.module").then(m => m.OutfitsPageModule)
       },
       {
         path: ":placeId",
         loadChildren: () =>
-          import("./places/place-detail/place-detail.module").then(
-            m => m.PlaceDetailPageModule
+          import("./outfits/outfit-detail/outfit-detail.module").then(
+            m => m.OutfitDetailPageModule
           )
       }
     ]
   },
   {
-    path: "new-place",
+    path: "new-outfit",
     loadChildren: () =>
-      import("./places/place-add/place-add.module").then(
-        m => m.PlaceAddPageModule
+      import("./outfits/outfit-add/outfit-add.module").then(
+        m => m.OutfitAddPageModule
       )
   },
   {

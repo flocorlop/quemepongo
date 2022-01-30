@@ -1,4 +1,4 @@
-export interface Place {
+export interface Outfit {
     id: string;
     title: string;
     imageURL: string;

@@ -1,38 +1,38 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { PlacesService } from "../places.service";
-import { Place } from "../place.model";
+import { OutfitsService } from "../outfits.service";
+import { Outfit } from "../outfit.model";
 import { AlertController } from "@ionic/angular";
 
 @Component({
-  selector: "app-place-detail",
-  templateUrl: "./place-detail.page.html",
-  styleUrls: ["./place-detail.page.scss"]
+  selector: "app-outfit-detail",
+  templateUrl: "./outfit-detail.page.html",
+  styleUrls: ["./outfit-detail.page.scss"]
 })
-export class PlaceDetailPage implements OnInit {
-  place: Place;
+export class OutfitDetailPage implements OnInit {
+  outfit: Outfit;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private placesService: PlacesService,
+    private outfitsService: OutfitsService,
     private router: Router,
     private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(paramMap => {
-      if (!paramMap.has("placeId")) {
+      if (!paramMap.has("outfitId")) {
         // redirect
-        this.router.navigate(['/places']);
+        this.router.navigate(['/outfits']);
       }
-      const recipeId = paramMap.get("placeId");
-      this.place = this.placesService.getPlace(recipeId);
+      const recipeId = paramMap.get("outfitId");
+      this.outfit = this.outfitsService.getOutfit(recipeId);
     });
   }
 
-  async deletePlace() {
+  async deleteOutfit() {
     const alertElment = await this.alertCtrl.create({
-      header: "Are you Sure, You want to delete this place?",
+      header: "Are you Sure, You want to delete this outfit?",
       message: "Be carefull.",
       buttons: [
         {
@@ -42,8 +42,8 @@ export class PlaceDetailPage implements OnInit {
         {
           text: "Delete",
           handler: () => {
-            this.placesService.deletePlace(this.place.id);
-            this.router.navigateByUrl("/places");
+            this.outfitsService.deleteOutfit(this.outfit.id);
+            this.router.navigateByUrl("/outfits");
           }
         }
       ]

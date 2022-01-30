@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Place } from "../places/place.model";
+import { Outfit } from "./outfit.model";
 
 @Injectable({
   providedIn: "root"
 })
-export class PlacesService {
-  private places: Place[] = [
+export class OutfitsService {
+  private outfits: Outfit[] = [
     {
       id: '1',
       title: "Eiffel Tower",
@@ -24,30 +24,30 @@ export class PlacesService {
 
   constructor() {}
 
-  getPlaces(): Place[] {
-    return [...this.places];
+  getOutfits(): Outfit[] {
+    return [...this.outfits];
   }
 
-  getPlace(placeId: string) {
+  getOutfit(placeId: string) {
     return {
-      ...this.places.find(place => {
-        return place.id === placeId;
+      ...this.outfits.find(outfit => {
+        return outfit.id === placeId;
       })
     };
   }
 
-  deletePlace(placeId: string) {
-    this.places = this.places.filter(place => {
-      return place.id !== placeId;
+  deleteOutfit(placeId: string) {
+    this.outfits = this.outfits.filter(outfit => {
+      return outfit.id !== placeId;
     });
   }
 
-  addPlace(title, imageURL) {
-    this.places.push({
+  addOutfit(title, imageURL) {
+    this.outfits.push({
       title,
       imageURL,
       comments: [],
-      id: this.places.length + 1 + ""
+      id: this.outfits.length + 1 + ""
     });
   }
 

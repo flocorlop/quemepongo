@@ -2,10 +2,10 @@
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-button>
-        <ion-icon name="airplane"></ion-icon>
+        <ion-icon name="sparkles-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Places</ion-title>
+    <ion-title>Outfits</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="goToHome()">
         <ion-icon name="globe"></ion-icon>
@@ -16,11 +16,11 @@
 
 <ion-content>
   <ion-list>
-    <app-place-item *ngFor="let place of places" [placeItem]="place"></app-place-item>
+    <app-outfit-item *ngFor="let outfit of outfits" [outfitItem]="outfit"></app-outfit-item>
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="danger" (click)="addNewPlace()" type="button">
+    <ion-fab-button color="danger" (click)="addNewOutfit()" type="button">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
