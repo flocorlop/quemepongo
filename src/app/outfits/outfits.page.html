@@ -16,7 +16,10 @@
 
 <ion-content>
   <ion-list>
-    <app-outfit-item *ngFor="let outfit of outfits" [outfitItem]="outfit"></app-outfit-item>
+    <app-outfit-item
+      *ngFor="let outfit of outfits"
+      [outfitItem]="outfit"
+    ></app-outfit-item>
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

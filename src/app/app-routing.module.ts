@@ -12,7 +12,7 @@ const routes: Routes = [
           import("./outfits/outfits.module").then(m => m.OutfitsPageModule)
       },
       {
-        path: ":placeId",
+        path: ":outfitId",
         loadChildren: () =>
           import("./outfits/outfit-detail/outfit-detail.module").then(
             m => m.OutfitDetailPageModule

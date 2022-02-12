@@ -1,8 +1,8 @@
-<ion-item [routerLink]="['/outfits', outfitItem.id]">
-  <ion-avatar slot="start">
-    <ion-img [src]="outfitItem.imageURL"></ion-img>
-  </ion-avatar>
-  <ion-label>
-    {{ outfitItem.title }}
-  </ion-label>
-</ion-item>
+<ion-card [routerLink]="['/outfits', outfitItem.id]">
+  <ion-img [src]="outfitItem.imageURL"></ion-img>
+  <ion-card-header>
+    <ion-card-subtitle>{{ outfitItem.title }}</ion-card-subtitle>
+    <ion-card-title>x% de ponertelo</ion-card-title>
+  </ion-card-header>
+  <ion-card-content> Descripcion x de outfit {{ outfitItem.id }} </ion-card-content>
+</ion-card>

@@ -28,17 +28,17 @@ export class OutfitsService {
     return [...this.outfits];
   }
 
-  getOutfit(placeId: string) {
+  getOutfit(outfitId: string) {
     return {
       ...this.outfits.find(outfit => {
-        return outfit.id === placeId;
+        return outfit.id === outfitId;
       })
     };
   }
 
-  deleteOutfit(placeId: string) {
+  deleteOutfit(outfitId: string) {
     this.outfits = this.outfits.filter(outfit => {
-      return outfit.id !== placeId;
+      return outfit.id !== outfitId;
     });
   }
 
