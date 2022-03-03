@@ -28,6 +28,13 @@ const routes: Routes = [
       )
   },
   {
+    path: "profile",
+    loadChildren: () =>
+      import("./home/profile/profile.module").then(
+        m => m.ProfilePageModule
+      )
+  },
+  {
     path: "home",
     loadChildren: () =>
       import("./home/home.module").then(m => m.HomePageModule)
