@@ -29,6 +29,6 @@ export class OutfitsPage implements OnInit {
   }
 
   goToProfile(){
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/profiles']);
   }
 }

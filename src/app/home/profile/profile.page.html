@@ -3,10 +3,23 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/outfits"></ion-back-button>
     </ion-buttons>
-    <ion-title>Outfits</ion-title>
+    <ion-title>Profiles</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="goToHome()">
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-card *ngFor="let u of dataProfile">
+      <ion-card-content>
+        <!-- <p>{{u.username}}</p>
+        <p>{{u.name}}</p>
+        <p>{{u.email}}</p> -->
+        <p>{{u}}</p>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

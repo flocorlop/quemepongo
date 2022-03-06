@@ -1,8 +1,6 @@
 from flask import Flask, jsonify, request
-
+import json
 app = Flask(__name__)
-
-from profiles import profiles
 
 # Testing Route
 @app.route('/ping', methods=['GET'])
@@ -12,8 +10,13 @@ def ping():
 # Get Data Routes
 @app.route('/profiles')
 def getProfiles():
-    # return jsonify(products)
-    return jsonify({'profiles': profiles})
+    # res = []
+    fichero = json.load(open('profiles.json'))
+    # print(fichero)
+    # lineas = fichero.readlines()
+    # for linea in lineas:
+        # res.append(linea)
+    return jsonify(fichero)
 
 
 @app.route('/profiles/<string:username>')
