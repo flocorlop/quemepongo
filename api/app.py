@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 import json
+from profiles import profiles
 app = Flask(__name__)
 
 # Testing Route
@@ -11,12 +12,12 @@ def ping():
 @app.route('/profiles')
 def getProfiles():
     # res = []
-    fichero = json.load(open('profiles.json'))
+    # fichero = json.load(open('profiles.json'))
     # print(fichero)
     # lineas = fichero.readlines()
     # for linea in lineas:
         # res.append(linea)
-    return jsonify(fichero)
+    return jsonify(profiles)
 
 
 @app.route('/profiles/<string:username>')
@@ -24,19 +25,23 @@ def getProfile(username):
     user = [
         u for u in profiles if u['username'] == username]
     if (len(user) > 0):
-        return jsonify({'profile': user[0]})
+        return jsonify(user[0])
     return jsonify({'message': 'Profile Not found'})
 
 # Create Data Routes
-# @app.route('/products', methods=['POST'])
-# def addProduct():
-#     new_product = {
-#         'name': request.json['name'],
-#         'price': request.json['price'],
-#         'quantity': 10
-#     }
-#     products.append(new_product)
-#     return jsonify({'products': products})
+@app.route('/profiles', methods=['POST'])
+def addProfile():
+    user = [
+        u for u in profiles if u['username'] == request.json['username']]
+    if (len(user) == 0):
+        new_profile = {
+            'name': request.json['name'],
+            'username': request.json['username'],
+            'email': request.json['email']
+        }
+        profiles.append(new_profile)
+        return jsonify(profiles)
+    return jsonify({'message': 'Profile exists yet.'})
 
 # Update Data Route
 @app.route('/profiles/<string:username>', methods=['PUT'])

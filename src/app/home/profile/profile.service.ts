@@ -10,10 +10,11 @@ export class ProfileService {
   constructor(private http: HttpClient) {}
 
   getDataProfile() {
-    return this.http.get(this.url).pipe(
-      map(this.extractData),
-      catchError(this.handleErrorObservable)
-  )
+    return this.http.get(this.url);
+    // .pipe(
+    //   map(this.extractData),
+    //   catchError(this.handleErrorObservable)
+  // )
     // return this.http.get<any>('https://jsonplaceholder.typicode.com/photos?_limit=20');
   }
   private extractData(res: any) {

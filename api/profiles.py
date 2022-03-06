@@ -1,4 +1,4 @@
-[
+profiles = [
   { "name": "flor", "username": "f", "email": "f@us.es" },
   { "name": "correa", "username": "c", "email": "c@us.es" },
   { "name": "lopez", "username": "l", "email": "l@us.es" }
