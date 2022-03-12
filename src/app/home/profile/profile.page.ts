@@ -8,7 +8,7 @@ import {Profile} from './profile.model';
 })
 export class ProfilePage implements OnInit {
 
-  dataProfile: Profile[] = [];
+  dataProfile: [];
   constructor(private profileService: ProfileService) {}
 
   ngOnInit() {
@@ -16,7 +16,7 @@ export class ProfilePage implements OnInit {
       .subscribe(data => {
         this.dataProfile = data;
       });
-      console.log("data profile:",this.dataProfile);
+      
   }
 
 }

@@ -10,7 +10,7 @@ export class ProfileService {
   constructor(private http: HttpClient) {}
 
   getDataProfile() {
-    return this.http.get(this.url);
+    return this.http.get<any>(this.url);
     // .pipe(
     //   map(this.extractData),
     //   catchError(this.handleErrorObservable)

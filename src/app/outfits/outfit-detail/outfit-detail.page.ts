@@ -16,7 +16,7 @@ export class OutfitDetailPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private outfitsService: OutfitsService,
     private router: Router,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
   ) {}
 
   ngOnInit() {

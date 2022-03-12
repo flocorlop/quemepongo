@@ -1,5 +1,6 @@
 <ion-header>
-  <ion-toolbar color="secondary">
+  
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/outfits"></ion-back-button>
     </ion-buttons>
@@ -11,12 +12,16 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<ion-content>
+<ion-card>
+  <ion-card-header>
+    <ion-img [src]="outfit.imageURL"></ion-img>
+    <ion-card-subtitle>{{outfit.percentage}}% de ponertelo</ion-card-subtitle>
+    <ion-card-title>{{ outfit.title }}</ion-card-title>
+  </ion-card-header>
 
-<!-- <ion-card> -->
-  <ion-img [src]="outfit.imageURL"></ion-img>
-  <!-- <ion-card-header> -->
-    <h1>{{ outfit.title }}</h1>
-    <h2>x% de ponertelo</h2>
-  <!-- </ion-card-header> -->
-  <h3> Descripcion x </h3>
-<!-- </ion-card> -->
+  <ion-card-content>
+    {{outfit.description}}
+  </ion-card-content>
+</ion-card>
+</ion-content>

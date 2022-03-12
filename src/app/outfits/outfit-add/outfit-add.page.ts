@@ -19,4 +19,7 @@ export class OutfitAddPage implements OnInit {
     this.router.navigate(['/outfits']);
   }
 
+  goToHome() {
+    this.router.navigate(['/outfits']);
+  }
 }
