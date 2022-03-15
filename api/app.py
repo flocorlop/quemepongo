@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 import json
 from profiles import profiles
+from outfits import outfits
 app = Flask(__name__)
 
 # Testing Route
@@ -8,15 +9,10 @@ app = Flask(__name__)
 def ping():
     return jsonify({'response': 'pong!'})
 
+#region Profiles
 # Get Data Routes
 @app.route('/profiles')
 def getProfiles():
-    # res = []
-    # fichero = json.load(open('profiles.json'))
-    # print(fichero)
-    # lineas = fichero.readlines()
-    # for linea in lineas:
-        # res.append(linea)
     return jsonify(profiles)
 
 
@@ -66,6 +62,27 @@ def deleteProfile(username):
             'message': 'Profile Deleted',
             'profiles': profiles
         })
+#endregion
+@app.route('/outfits')
+def getOutfits():
+    return jsonify(outfits)
 
+
+# @app.route('/outfits/<string:outfitId>')
+# def getProfile(username):
+#     user = [
+#         u for u in profiles if u['username'] == username]
+#     if (len(user) > 0):
+#         return jsonify(user[0])
+#     return jsonify({'message': 'Profile Not found'})
+
+
+
+
+
+#region Outfits
+
+
+#endregion
 if __name__ == '__main__':
     app.run(debug=True, port=4000)

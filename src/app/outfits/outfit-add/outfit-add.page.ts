@@ -14,8 +14,8 @@ export class OutfitAddPage implements OnInit {
   ngOnInit() {
   }
 
-  saveNewOutfit(title: HTMLInputElement, imageURL: HTMLInputElement) {
-    this.outfitsService.addOutfit(title.value, imageURL.value);
+  saveNewOutfit(title: HTMLInputElement,desc:HTMLInputElement, imageURL: HTMLInputElement) {
+   // this.outfitsService.addOutfit(title.value,desc.value, imageURL.value);
     this.router.navigate(['/outfits']);
   }
 

@@ -8,17 +8,22 @@ import { Router } from '@angular/router';
   styleUrls: ["./outfits.page.scss"]
 })
 export class OutfitsPage implements OnInit {
-  outfits: Outfit[];
+  outfits:[];
 
   constructor(private outfitsService: OutfitsService, private router: Router) {}
 
   ngOnInit() {
-    this.outfits = this.outfitsService.getOutfits();
+    // this.outfits = this.outfitsService.getOutfits();
+    this.outfitsService.getOutfits()
+      .subscribe(data => {
+        this.outfits = data;
+      });
+      
   }
 
-  ionViewWillEnter() {
-    this.outfits = this.outfitsService.getOutfits();
-  }
+  // ionViewWillEnter() {
+  //   this.outfits = this.outfitsService.getOutfits();
+  // }
 
   addNewOutfit() {
     this.router.navigate(['/new-outfit']);

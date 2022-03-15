@@ -15,8 +15,9 @@
       <ion-card>
         <ion-card-content>
           <ion-input placeholder="Write a Title" type="text" #title></ion-input>
+          <ion-input placeholder="Write a Description" type="text" #desc></ion-input>
           <ion-input placeholder="http://imagewebsite.com" #imageURL></ion-input>
-          <ion-button color="primary" (click)="saveNewOutfit(title, imageURL)">
+          <ion-button color="primary" (click)="saveNewOutfit(title, desc, imageURL)">
             Save
           </ion-button>
         </ion-card-content>

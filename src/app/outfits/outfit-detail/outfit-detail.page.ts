@@ -26,7 +26,7 @@ export class OutfitDetailPage implements OnInit {
         this.router.navigate(['/outfits']);
       }
       const recipeId = paramMap.get("outfitId");
-      this.outfit = this.outfitsService.getOutfit(recipeId);
+      //this.outfit = this.outfitsService.getOutfit(recipeId);
     });
   }
 
@@ -42,7 +42,7 @@ export class OutfitDetailPage implements OnInit {
         {
           text: "Delete",
           handler: () => {
-            this.outfitsService.deleteOutfit(this.outfit.id);
+            //this.outfitsService.deleteOutfit(this.outfit.id);
             this.router.navigateByUrl("/outfits");
           }
         }
