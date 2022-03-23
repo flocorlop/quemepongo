@@ -2,7 +2,14 @@ from flask import Flask, jsonify, request
 import json
 from profiles import profiles
 from outfits import outfits
+from Models import db, Outfits
 app = Flask(__name__)
+
+#config bbdd
+app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///C:\\bbdd_tfg\\outfits.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db.init_app(app)
+
 
 # Testing Route
 @app.route('/ping', methods=['GET'])
@@ -63,25 +70,14 @@ def deleteProfile(username):
             'profiles': profiles
         })
 #endregion
-@app.route('/outfits')
-def getOutfits():
-    return jsonify(outfits)
-
-
-# @app.route('/outfits/<string:outfitId>')
-# def getProfile(username):
-#     user = [
-#         u for u in profiles if u['username'] == username]
-#     if (len(user) > 0):
-#         return jsonify(user[0])
-#     return jsonify({'message': 'Profile Not found'})
-
-
-
 
 
 #region Outfits
-
+@app.route("/outfits")
+def getOutfits():
+    outfits = Outfits.query.all()
+    outfits = [o.serialize() for o in outfits]
+    return jsonify(outfits)
 
 #endregion
 if __name__ == '__main__':
