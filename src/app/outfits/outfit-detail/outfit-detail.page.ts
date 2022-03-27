@@ -10,14 +10,14 @@ import { AlertController } from "@ionic/angular";
   styleUrls: ["./outfit-detail.page.scss"]
 })
 export class OutfitDetailPage implements OnInit {
-  outfit: Outfit;
+  outfit;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private outfitsService: OutfitsService,
     private router: Router,
     private alertCtrl: AlertController,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(paramMap => {
@@ -25,9 +25,14 @@ export class OutfitDetailPage implements OnInit {
         // redirect
         this.router.navigate(['/outfits']);
       }
-      const recipeId = paramMap.get("outfitId");
-      //this.outfit = this.outfitsService.getOutfit(recipeId);
+      const idO = paramMap.get("outfitId");
+      this.outfit = this.outfitsService.getOutfit(idO)
+        .subscribe(data => {
+          this.outfit = data;
+        });
     });
+
+
   }
 
   async deleteOutfit() {

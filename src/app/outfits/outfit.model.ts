@@ -1,5 +1,5 @@
 export interface Outfit {
-    id: bigint;
+    rowid: bigint;
     percentage: string;
     title: string;
     imageURL: string;

@@ -79,6 +79,19 @@ def getOutfits():
     outfits = [o.serialize() for o in outfits]
     return jsonify(outfits)
 
+@app.route('/outfits/<string:id>',methods=['GET'])
+def getOutfit(id):
+    try:
+        outfit = Outfits.query.filter_by(rowid=id).first()
+        if not outfit:
+            return jsonify({"msg": "Este outfit no existe"}), 200
+        else:
+            return jsonify(outfit.serialize()),200
+    except Exception:
+        exception("[SERVER]: Error ->")
+        return jsonify({"msg": "Ha ocurrido un error"}), 500            
+
+
 #endregion
 if __name__ == '__main__':
     app.run(debug=True, port=4000)

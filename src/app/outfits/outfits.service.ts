@@ -6,40 +6,20 @@ import { HttpClient } from "@angular/common/http";
   providedIn: "root"
 })
 export class OutfitsService {
-  // private outfits: Outfit[] = [
-  //   {
-  //     id: "1",
-  //     percentage: "95",
-  //     title: "Summer outfit",
-  //     imageURL:
-  //       "https://www.stylevore.com/wp-content/uploads/2019/06/summer-style-fashion-ootd.jpg",
-  //     description: "White top with high waist jeans"
-  //   },
-  //   {
-  //     id: "2",
-  //     percentage: "85",
-  //     title: "Winter outfit for men",
-  //     imageURL:
-  //       "https://cdn.shopify.com/s/files/1/0162/2116/files/Winter_street_style_looks_for_men_19.jpg?v=1548239991",
-  //     description: "White sweater with brown jacket, jeans and boots"
-  //   }
-  // ];
-  urlGetOutfits =  'http://127.0.0.1:4000/outfits';
 
-  constructor(private http: HttpClient) {}
+  urlGetOutfits = 'http://127.0.0.1:4000/outfits';
+
+  constructor(private http: HttpClient) { }
 
   getOutfits() {
     //return [...thi  s.outfits];
     return this.http.get<any>(this.urlGetOutfits);
   }
 
-  // getOutfit(outfitId: string) {
-  //   return {
-  //     ...this.outfits.find(outfit => {
-  //       return outfit.id === outfitId;
-  //     })
-  //   };
-  // }
+  getOutfit(outfitId: string) {
+    let urlGetOutfit = this.urlGetOutfits + "/" + outfitId;
+    return this.http.get<any>(urlGetOutfit);
+  }
 
   // deleteOutfit(outfitId: string) {
   //   this.outfits = this.outfits.filter(outfit => {
