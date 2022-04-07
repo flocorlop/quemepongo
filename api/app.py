@@ -121,7 +121,7 @@ def preprocess_image(image, target_size):
     image = image.resize(target_size)
     image = img_to_array(image)
     image = np.expand_dims(image, axis=0)
-
+    print("image preprocessed")
     return image
 
 print ("Loading keras model")
@@ -129,17 +129,23 @@ get_model()
 
 @app.route("/outfits/new-outfit/predict", methods=["POST"])
 def predict():
-    message = request.get_json(force=True)
-    encoded = message['image']
-    decoded = base64.b64decode(enconded)
+    #me llega formdata
+    
+    datasent = request.get_json(force=True)
+    encoded = datasent[0]['image_encoded']
+    encoded= encoded.partition(",")[2]
+    print(encoded)
+    decoded = base64.b64decode(encoded)
     image = Image.open(io.BytesIO(decoded))
-    processed_image = preprocess_image(image, target_size(224,224))
+    processed_image = preprocess_image(image, (160,160))
 
     prediction = model.predict(processed_image).tolist()
 
     response = {
-        'prediction_percentage': prediction[0][0]
+        'prediction': {
+            'res': prediction[0][0]
         }
+    }
     
     return jsonify(response)
 
