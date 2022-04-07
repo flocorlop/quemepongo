@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { OutfitsService } from '../outfits.service';
-import { ChildActivationStart, Router } from '@angular/router';
+import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { formatNumber } from '@angular/common';
 
 @Component({
   selector: 'app-outfit-add',
@@ -14,7 +14,9 @@ export class OutfitAddPage implements OnInit {
   allowed_types = ['image/png', 'image/jpeg'];
   cardImageBase64: string;
   isImageSaved: boolean;
-  constructor(private outfitsService: OutfitsService, private router: Router, private http: HttpClient) { }
+  predictionRes;
+  predictionResP;
+  constructor(private router: Router, private http: HttpClient, @Inject(LOCALE_ID) private locale: string) { }
 
   ngOnInit() {
   }
@@ -59,7 +61,12 @@ export class OutfitAddPage implements OnInit {
   onUpload() {
     const data = [{ "image_encoded": this.cardImageBase64 }];
 
-    this.http.post('http://127.0.0.1:4000/outfits/new-outfit/predict', data)
-      .subscribe();
+    this.predictionRes = this.http.post('http://127.0.0.1:4000/outfits/new-outfit/predict', data)
+      .subscribe(res => {
+        this.predictionRes = res;
+        this.predictionResP = this.predictionRes.prediction.res * 100;
+        this.predictionResP = formatNumber(this.predictionResP, this.locale, '1.2-2');
+      });
+
   }
 }

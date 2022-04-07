@@ -142,9 +142,8 @@ def predict():
     prediction = model.predict(processed_image).tolist()
 
     response = {
-        'prediction': {
-            'res': prediction[0][0]
-        }
+        'prediction': {"res": prediction[0][0]}
+        
     }
     
     return jsonify(response)
