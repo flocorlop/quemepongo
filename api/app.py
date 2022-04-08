@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, jsonify, request
 import json
 from profiles import profiles
@@ -15,6 +16,7 @@ from keras.models import Sequential
 from keras.models import load_model
 from keras.preprocessing.image import ImageDataGenerator
 from keras.preprocessing.image import img_to_array
+from mimetypes import guess_extension
 #endregion
 
 app = Flask(__name__)
@@ -134,13 +136,20 @@ def predict():
     datasent = request.get_json(force=True)
     encoded = datasent[0]['image_encoded']
     encoded= encoded.partition(",")[2]
-    print(encoded)
+    typeImg = guess_extension(encoded.partition(",")[0])
+    print(typeImg)
     decoded = base64.b64decode(encoded)
     image = Image.open(io.BytesIO(decoded))
     processed_image = preprocess_image(image, (160,160))
 
     prediction = model.predict(processed_image).tolist()
-
+    percentage = prediction[0][0]
+    if(percentage):
+        print("img uplodaded has been predicted")
+        curr_datetime = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
+        modified_picture_path = "imgs/" + curr_datetime + ".jpg"
+        image.save(modified_picture_path)
+    
     response = {
         'prediction': {"res": prediction[0][0]}
         
