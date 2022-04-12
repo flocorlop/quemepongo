@@ -16,9 +16,12 @@ export class OutfitAddPage implements OnInit {
   isImageSaved: boolean;
   predictionRes;
   predictionResP;
+  outOfRange: boolean = false;
+
   constructor(private router: Router, private http: HttpClient, @Inject(LOCALE_ID) private locale: string) { }
 
   ngOnInit() {
+    this.cardImageBase64 = "";
   }
 
   saveNewOutfit(title, desc, imageURL) {
@@ -66,7 +69,15 @@ export class OutfitAddPage implements OnInit {
         this.predictionRes = res;
         this.predictionResP = this.predictionRes.prediction.res * 100;
         this.predictionResP = formatNumber(this.predictionResP, this.locale, '1.2-2');
-      });
 
+        if (this.predictionResP > 100 || this.predictionResP < 0) {
+          this.outOfRange = true;
+          console.log("fuera de rango");
+
+        }
+        else {
+          this.outOfRange = false;
+        }
+      });
   }
 }

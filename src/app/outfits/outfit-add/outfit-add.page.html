@@ -18,30 +18,35 @@
             type="text"
             #desc
           ></ion-input>
-          <ion-input
-            placeholder="http://imagewebsite.com"
-            #imageURL
-          ></ion-input>
-          <ion-button
-            color="primary"
-            (click)="saveNewOutfit(title, desc, imageURL)"
-          >
-            Save
-          </ion-button>
+          <img src="{{cardImageBase64}}" />
+
           <input
             type="file"
             class="file-input"
             (change)="onFileSelected($event)"
             #fileUpload
           />
-          <ion-button (click)="onUpload()">Upload!</ion-button>
+          <ion-button (click)="onUpload()">Predict</ion-button>
+          <ion-button
+            color="primary"
+            (click)="saveNewOutfit(title, desc, imageURL)"
+          >
+            Save
+          </ion-button>
         </ion-card-content>
       </ion-card>
-      <ion-card *ngIf="predictionResP">
+      <ion-card *ngIf="outOfRange; else viewP">
         <ion-card-content>
-          <h3>{{predictionResP}}%</h3>
+          <h3>No ha sido posible predecir esta imagen</h3>
         </ion-card-content>
       </ion-card>
+      <ng-template #viewP>
+        <ion-card *ngIf="predictionResP">
+          <ion-card-content>
+            <h3>Prediction: {{predictionResP}} %</h3>
+          </ion-card-content>
+        </ion-card>
+      </ng-template>
     </ion-col>
   </ion-row>
 </ion-content>
