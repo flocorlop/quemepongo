@@ -18,7 +18,7 @@
             type="text"
             #desc
           ></ion-input>
-          <img src="{{cardImageBase64}}" />
+          <img src="{{cardImageBase64}}" #image />
 
           <input
             type="file"
@@ -26,10 +26,13 @@
             (change)="onFileSelected($event)"
             #fileUpload
           />
-          <ion-button (click)="onUpload()">Predict</ion-button>
+          <ion-button color="new" (click)="onUpload()" expand="block"
+            >Predict</ion-button
+          >
           <ion-button
-            color="primary"
-            (click)="saveNewOutfit(title, desc, imageURL)"
+            color="success"
+            expand="block"
+            (click)="saveNewOutfit(title, desc)"
           >
             Save
           </ion-button>

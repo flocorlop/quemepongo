@@ -1,0 +1,22 @@
+.file-input {
+    cursor: pointer;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 5px 15px;
+    margin: 5px;
+    background: #dddddd;
+    display: block;
+    width: 100%;
+  }
+  .file-input:hover {
+    background: #5cbd95;
+  }
+  .file-input:active {
+    background: #9fa1a0;
+  }
+  .file-input:invalid + span {
+    color: #000000;
+  }
+  .file-input:valid + span {
+    color: #ffffff;
+  }

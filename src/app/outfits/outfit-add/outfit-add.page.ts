@@ -17,6 +17,7 @@ export class OutfitAddPage implements OnInit {
   predictionRes;
   predictionResP;
   outOfRange: boolean = false;
+  resultSave;
 
   constructor(private router: Router, private http: HttpClient, @Inject(LOCALE_ID) private locale: string) { }
 
@@ -24,9 +25,22 @@ export class OutfitAddPage implements OnInit {
     this.cardImageBase64 = "";
   }
 
-  saveNewOutfit(title, desc, imageURL) {
-    // this.outfitsService.addOutfit(title.value,desc.value, imageURL.value);
-    //this.router.navigate(['/outfits']);
+  saveNewOutfit(title, desc) {
+
+    const data = [
+      {
+        "percentage": this.predictionResP,
+        "title": title.value,
+        "image_encoded": this.cardImageBase64,
+        "description": desc.value
+      }];
+
+    this.resultSave = this.http.post('http://127.0.0.1:4000/outfits/new-outfit/save', data)
+      .subscribe(res => {
+        this.resultSave = res;
+
+
+      });
     console.log("guarda");
   }
 
@@ -70,14 +84,14 @@ export class OutfitAddPage implements OnInit {
         this.predictionResP = this.predictionRes.prediction.res * 100;
         this.predictionResP = formatNumber(this.predictionResP, this.locale, '1.2-2');
 
-        if (this.predictionResP > 100 || this.predictionResP < 0) {
-          this.outOfRange = true;
-          console.log("fuera de rango");
+        // if (this.predictionResP > 100 || this.predictionResP < 0) {
+        //   this.outOfRange = true;
+        //   console.log("fuera de rango");
 
-        }
-        else {
-          this.outOfRange = false;
-        }
+        // }
+        // else {
+        //   this.outOfRange = false;
+        // }
       });
   }
 }

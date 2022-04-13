@@ -1,9 +1,14 @@
 from datetime import datetime
+from turtle import title
 from flask import Flask, jsonify, request
 import json
 from profiles import profiles
+from logging import exception
 # from outfits import outfits
 from Models import db, Outfits
+from sqlalchemy import func
+from sqlalchemy import select
+from sqlalchemy import table, column
 
 #region imports predictions:
 import base64
@@ -108,7 +113,24 @@ def getOutfit(id):
 
 @app.route("/outfits/new-outfit/save", methods=["POST"])
 def saveOutfit():
-    return jsonify("guardado")
+    try:
+        dataReceived = request.get_json(force=True)
+        print(dataReceived)
+        id = Outfits.query.count() +1
+        print(str(id))
+        percentage = dataReceived[0]["percentage"]
+        title = dataReceived[0]["title"]
+        photo = dataReceived[0]["image_encoded"]
+        description = dataReceived[0]["description"]
+        
+        newOutfit = Outfits(id,percentage,title,photo,description)
+        db.session.add(newOutfit)
+        db.session.commit()
+
+        return jsonify(newOutfit.serialize()) , 200
+    except Exception:
+        exception("\n[SERVER]: Error adding outfit. Log: \n")
+        return jsonify({"msg": "Algo ha salido mal"}), 500
 #endregion
 
 
