@@ -115,9 +115,7 @@ def getOutfit(id):
 def saveOutfit():
     try:
         dataReceived = request.get_json(force=True)
-        print(dataReceived)
         id = Outfits.query.count() +1
-        print(str(id))
         percentage = dataReceived[0]["percentage"]
         title = dataReceived[0]["title"]
         photo = dataReceived[0]["image_encoded"]

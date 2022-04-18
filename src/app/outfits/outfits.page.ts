@@ -12,12 +12,10 @@ export class OutfitsPage implements OnInit {
   constructor(private outfitsService: OutfitsService, private router: Router) { }
 
   ngOnInit() {
-    console.log("se inicia componente")
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.outfitsService.getOutfits()
       .subscribe(data => {
         this.outfits = data;
-        console.log(data)
       });
 
   }

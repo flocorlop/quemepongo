@@ -2,6 +2,8 @@ import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { formatNumber } from '@angular/common';
+import { AlertController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-outfit-add',
@@ -19,35 +21,52 @@ export class OutfitAddPage implements OnInit {
   outOfRange: boolean = false;
   resultSave;
 
-  constructor(private router: Router, private http: HttpClient, @Inject(LOCALE_ID) private locale: string) { }
+  constructor(private router: Router, private http: HttpClient, @Inject(LOCALE_ID) private locale: string, public alertController: AlertController) { }
 
   ngOnInit() {
     this.cardImageBase64 = "";
   }
 
   saveNewOutfit(title, desc) {
+    if (title.value === "") {
+      this.presentAlert('Inserta título');
+    } else if (desc.value === "") {
+      this.presentAlert('Inserta descripción');
+    } else if (this.cardImageBase64 === "") {
+      this.presentAlert('Selecciona imagen');
+    } else if (this.predictionResP === undefined) { this.presentAlert('Pulsa botón para obtener predicción'); }
+    else {
+      const data = [
+        {
+          "percentage": this.predictionResP,
+          "title": title.value,
+          "image_encoded": this.cardImageBase64,
+          "description": desc.value
+        }];
 
-    const data = [
-      {
-        "percentage": this.predictionResP,
-        "title": title.value,
-        "image_encoded": this.cardImageBase64,
-        "description": desc.value
-      }];
-
-    this.resultSave = this.http.post('http://127.0.0.1:4000/outfits/new-outfit/save', data)
-      .subscribe(res => {
-        this.resultSave = res;
-
-
-      });
-    console.log("guardado");
-    this.router.navigate(['/outfits'])
-      .then(() => {
-        window.location.reload();
-      });
+      this.resultSave = this.http.post('http://127.0.0.1:4000/outfits/new-outfit/save', data)
+        .subscribe(res => {
+          this.resultSave = res;
+        });
+      console.log(this.resultSave.response);
+      console.log("guardado");
+      this.router.navigate(['/outfits'])
+        .then(() => {
+          window.location.reload();
+        });
+    }
   }
+  async presentAlert(mes) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'No se puede guardar',
+      subHeader: 'Por favor,',
+      message: mes,
+      buttons: ['OK']
+    });
 
+    await alert.present();
+  }
   goToHome() {
     this.router.navigate(['/outfits']);
   }
@@ -67,8 +86,6 @@ export class OutfitAddPage implements OnInit {
       image.onload = rs => {
         const img_height = rs.currentTarget['height'];
         const img_width = rs.currentTarget['width'];
-
-        console.log(img_height, img_width);
         const imgBase64Path = e.target.result;
         this.cardImageBase64 = imgBase64Path;
         this.isImageSaved = true;
