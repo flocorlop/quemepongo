@@ -12,7 +12,6 @@ export class OutfitsService {
   constructor(private http: HttpClient) { }
 
   getOutfits() {
-    //return [...thi  s.outfits];
     return this.http.get<any>(this.urlGetOutfits);
   }
 

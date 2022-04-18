@@ -15,7 +15,7 @@ import base64
 import numpy as np
 import io
 from PIL import Image
-import keras
+import keras, tensorflow as tf
 from keras import backend as K
 from keras.models import Sequential
 from keras.models import load_model
@@ -102,7 +102,7 @@ def getOutfits():
 @app.route('/outfits/<string:id>',methods=['GET'])
 def getOutfit(id):
     try:
-        outfit = Outfits.query.filter_by(rowid=id).first()
+        outfit = Outfits.query.filter_by(id=id).first()
         if not outfit:
             return jsonify({"msg": "Este outfit no existe"}), 200
         else:
@@ -154,8 +154,6 @@ get_model()
 
 @app.route("/outfits/new-outfit/predict", methods=["POST"])
 def predict():
-    #me llega formdata
-    
     datasent = request.get_json(force=True)
     encoded = datasent[0]['image_encoded']
     encodedImg= encoded.partition(",")[2]
@@ -168,21 +166,17 @@ def predict():
         processed_image = preprocess_image(image, (160,160))
         prediction = model.predict(processed_image).tolist()
         percentage = prediction[0][0]
-        # if(percentage):
-        #     print("img uplodaded has been predicted")
-        #     curr_datetime = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
-        #     modified_picture_path = "imgs/" + curr_datetime + typeImg
-        #     print(modified_picture_path)
-        #     image.save(modified_picture_path)
+        percentage01 = tf.nn.sigmoid(percentage).numpy()
+        percentage01 = float(percentage01*100)
         
+        print("prediction de 0 a 1: " + str(percentage01))
         response = {
-            'prediction': {"res": prediction[0][0]}
-            
+            'prediction': {"res": percentage01}
         }
-        print("prediction " + str(percentage))
+        
         return jsonify(response)
     else:
-        raise Exception("No se puede subir un archivo diferente al tipo .jpeg")
+        raise Exception()
 
 #endregion
 

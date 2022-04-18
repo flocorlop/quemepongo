@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { OutfitsService } from "./outfits.service";
-import { Outfit } from "./outfit.model";
 import { Router } from '@angular/router';
 @Component({
   selector: "app-outfits",
@@ -8,22 +7,20 @@ import { Router } from '@angular/router';
   styleUrls: ["./outfits.page.scss"]
 })
 export class OutfitsPage implements OnInit {
-  outfits:[];
+  outfits: [];
 
-  constructor(private outfitsService: OutfitsService, private router: Router) {}
+  constructor(private outfitsService: OutfitsService, private router: Router) { }
 
   ngOnInit() {
-    // this.outfits = this.outfitsService.getOutfits();
+    console.log("se inicia componente")
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.outfitsService.getOutfits()
       .subscribe(data => {
         this.outfits = data;
+        console.log(data)
       });
-      
-  }
 
-  // ionViewWillEnter() {
-  //   this.outfits = this.outfitsService.getOutfits();
-  // }
+  }
 
   addNewOutfit() {
     this.router.navigate(['/new-outfit']);
@@ -33,7 +30,7 @@ export class OutfitsPage implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  goToProfile(){
+  goToProfile() {
     this.router.navigate(['/profiles']);
   }
 }

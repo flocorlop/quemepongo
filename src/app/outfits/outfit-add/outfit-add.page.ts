@@ -41,7 +41,11 @@ export class OutfitAddPage implements OnInit {
 
 
       });
-    console.log("guarda");
+    console.log("guardado");
+    this.router.navigate(['/outfits'])
+      .then(() => {
+        window.location.reload();
+      });
   }
 
   goToHome() {
@@ -81,17 +85,8 @@ export class OutfitAddPage implements OnInit {
     this.predictionRes = this.http.post('http://127.0.0.1:4000/outfits/new-outfit/predict', data)
       .subscribe(res => {
         this.predictionRes = res;
-        this.predictionResP = this.predictionRes.prediction.res * 100;
+        this.predictionResP = this.predictionRes.prediction.res;
         this.predictionResP = formatNumber(this.predictionResP, this.locale, '1.2-2');
-
-        // if (this.predictionResP > 100 || this.predictionResP < 0) {
-        //   this.outOfRange = true;
-        //   console.log("fuera de rango");
-
-        // }
-        // else {
-        //   this.outOfRange = false;
-        // }
       });
   }
 }
