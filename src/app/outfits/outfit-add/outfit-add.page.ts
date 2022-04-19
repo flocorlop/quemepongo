@@ -48,7 +48,6 @@ export class OutfitAddPage implements OnInit {
         .subscribe(res => {
           this.resultSave = res;
         });
-      console.log(this.resultSave.response);
       console.log("guardado");
       this.router.navigate(['/outfits'])
         .then(() => {

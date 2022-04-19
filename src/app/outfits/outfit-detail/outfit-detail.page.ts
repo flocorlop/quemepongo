@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { OutfitsService } from "../outfits.service";
-import { Outfit } from "../outfit.model";
 import { AlertController } from "@ionic/angular";
 
 @Component({
@@ -42,13 +41,17 @@ export class OutfitDetailPage implements OnInit {
       buttons: [
         {
           text: "Cancel",
-          role: "cancel"
+          cssClass: 'success',
         },
         {
           text: "Delete",
+          cssClass: 'danger',
           handler: () => {
-            //this.outfitsService.deleteOutfit(this.outfit.id);
-            this.router.navigateByUrl("/outfits");
+            this.outfitsService.deleteOutfit(this.outfit.id);
+            this.router.navigate(['/outfits'])
+              .then(() => {
+                window.location.reload();
+              });
           }
         }
       ]

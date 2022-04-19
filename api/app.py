@@ -111,6 +111,21 @@ def getOutfit(id):
         exception("[SERVER]: Error ->")
         return jsonify({"msg": "Ha ocurrido un error"}), 500            
 
+@app.route('/outfits/delete/<string:id>',methods=['DELETE'])
+def deleteOutfit(id):
+    try:
+        outfit = Outfits.query.filter_by(id=id).first()
+        if not outfit:
+            return jsonify({"msg": "Este outfit no existe"}), 200
+        else:
+            db.session.delete(outfit)
+            db.session.commit()
+            print("borrado outfit")
+            return jsonify(outfit.serialize()),200
+    except Exception:
+        exception("[SERVER]: Error ->")
+        return jsonify({"msg": "Ha ocurrido un error"}), 500            
+
 @app.route("/outfits/new-outfit/save", methods=["POST"])
 def saveOutfit():
     try:
