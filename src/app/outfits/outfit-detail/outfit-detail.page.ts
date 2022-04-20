@@ -58,4 +58,8 @@ export class OutfitDetailPage implements OnInit {
     });
     await alertElment.present();
   }
+
+  editOutfit() {
+    this.router.navigate(["/outfits/edit", this.outfit.id]);
+  }
 }

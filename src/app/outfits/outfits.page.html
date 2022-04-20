@@ -1,11 +1,11 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="new">
     <ion-title>Outfits</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-fab vertical="top" horizontal="end" slot="fixed">
-  <ion-fab-button (click)="goToProfile()">
+  <ion-fab-button (click)="goToProfile()" color="warning">
     <ion-icon name="body"></ion-icon>
   </ion-fab-button>
 </ion-fab>
@@ -19,7 +19,7 @@
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="danger" (click)="addNewOutfit()" type="button">
+    <ion-fab-button color="warning" (click)="addNewOutfit()" type="button">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

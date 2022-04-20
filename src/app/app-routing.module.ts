@@ -17,6 +17,11 @@ const routes: Routes = [
           import("./outfits/outfit-detail/outfit-detail.module").then(
             m => m.OutfitDetailPageModule
           )
+      },
+      {
+        path: "edit/:outfitId",
+        loadChildren: () =>
+          import("./outfits/outfit-edit/outfit-edit.module").then(m => m.OutfitEditPageModule)
       }
     ]
   },
@@ -47,4 +52,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

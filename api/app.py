@@ -111,6 +111,19 @@ def getOutfit(id):
         exception("[SERVER]: Error ->")
         return jsonify({"msg": "Ha ocurrido un error"}), 500            
 
+@app.route('/outfits/<string:id>/edit',methods=['UPDATE'])
+def editOutfit(id):
+    try:
+        print("aqui editar")
+        outfit = Outfits.query.filter_by(id=id).first()
+        if not outfit:
+            return jsonify({"msg": "Este outfit no existe"}), 200
+        else:
+            return jsonify(outfit.serialize()),200
+    except Exception:
+        exception("[SERVER]: Error ->")
+        return jsonify({"msg": "Ha ocurrido un error"}), 500            
+
 @app.route('/outfits/delete/<string:id>',methods=['DELETE'])
 def deleteOutfit(id):
     try:
@@ -141,6 +154,26 @@ def saveOutfit():
         db.session.commit()
 
         return jsonify(newOutfit.serialize()) , 200
+    except Exception:
+        exception("\n[SERVER]: Error adding outfit. Log: \n")
+        return jsonify({"msg": "Algo ha salido mal"}), 500
+
+@app.route("/outfits/edit/save", methods=["POST"])
+def saveEditOutfit():
+    try:
+        dataReceived = request.get_json(force=True)
+        id = dataReceived[0]["id"]
+        #  percentage = dataReceived[0]["percentage"]
+        newT = dataReceived[0]["title"]
+        # photo = dataReceived[0]["image_encoded"]
+        newDesc = dataReceived[0]["description"]
+        
+        itemOutfit = Outfits.query.filter_by(id=id).first()
+        itemOutfit.title = newT
+        itemOutfit.description = newDesc
+        db.session.commit()
+
+        return jsonify(itemOutfit.serialize()) , 200
     except Exception:
         exception("\n[SERVER]: Error adding outfit. Log: \n")
         return jsonify({"msg": "Algo ha salido mal"}), 500

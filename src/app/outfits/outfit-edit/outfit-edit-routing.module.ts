@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SelectImagePage } from './select-image.page';
+import { OutfitEditPage } from './outfit-edit.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: SelectImagePage,
+    component: OutfitEditPage,
   }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SelectImageRoutingModule {}
+export class OutfitEditRoutingModule { }

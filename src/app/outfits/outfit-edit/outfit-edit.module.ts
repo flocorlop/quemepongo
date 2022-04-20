@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { SelectImagePage } from './select-image.page';
+import { OutfitEditPage } from './outfit-edit.page';
 
-import { SelectImageRoutingModule } from './select-image-routing.module';
+import { OutfitEditRoutingModule } from './outfit-edit-routing.module';
 
 
 @NgModule({
@@ -12,8 +12,8 @@ import { SelectImageRoutingModule } from './select-image-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    SelectImageRoutingModule
+    OutfitEditRoutingModule
   ],
-  declarations: [SelectImagePage]
+  declarations: [OutfitEditPage]
 })
-export class SelectImagePageModule {}
+export class OutfitEditPageModule { }

@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar color="new">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/outfits"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit outfit</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="deleteOutfit()">
+        <ion-icon name="trash" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<!-- <ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-img [src]="outfit.imageURL"></ion-img>
+      <ion-card-subtitle>{{outfit.percentage}}% de ponertelo</ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+</ion-content> -->
+
+<ion-content>
+  <!-- <ion-row>
+    <ion-col> -->
+  <ion-card>
+    <ion-card-content>
+      <ion-img [src]="outfit.imageURL"></ion-img>
+      <ion-card-title>{{outfit.percentage}}% de ponertelo</ion-card-title>
+
+      <ion-input placeholder="New Title" type="text" #title></ion-input>
+      <ion-input placeholder="New Description" type="text" #desc></ion-input>
+
+      <ion-button
+        color="success"
+        expand="block"
+        (click)="saveEditOutfit(title, desc)"
+      >
+        Save
+      </ion-button>
+      <ion-button color="new" expand="block" (click)="cancelEdit()">
+        Cancel
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+  <!-- </ion-col>
+  </ion-row> -->
+</ion-content>
