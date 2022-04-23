@@ -10,6 +10,7 @@ import { AlertController } from "@ionic/angular";
 })
 export class OutfitDetailPage implements OnInit {
   outfit;
+  predictionColor;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -19,6 +20,7 @@ export class OutfitDetailPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.predictionColor = "light";
     this.activatedRoute.paramMap.subscribe(paramMap => {
       if (!paramMap.has("outfitId")) {
         // redirect
@@ -28,10 +30,21 @@ export class OutfitDetailPage implements OnInit {
       this.outfit = this.outfitsService.getOutfit(idO)
         .subscribe(data => {
           this.outfit = data;
+          if (this.outfit.percentage >= 0 && this.outfit.percentage < 25) {
+            this.predictionColor = "025";
+          }
+          else if (this.outfit.percentage >= 25 && this.outfit.percentage < 50) {
+            this.predictionColor = "2550";
+          }
+          else if (this.outfit.percentage >= 50 && this.outfit.percentage < 75) {
+            this.predictionColor = "5075";
+          }
+          else if (this.outfit.percentage >= 75 && this.outfit.percentage <= 100) {
+            this.predictionColor = "75100";
+          }
         });
+
     });
-
-
   }
 
   async deleteOutfit() {
