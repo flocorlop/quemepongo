@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/profiles"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{profile.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-img [src]="profile.imageURL"></ion-img>
+      <ion-card-subtitle>{{profile.name}}% de ponertelo</ion-card-subtitle>
+      <ion-card-title>{{ profile.username }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content> {{profile.email}} </ion-card-content>
+  </ion-card>
+  <ion-fab
+    [routerLink]="['/profiles/edit', profile.id]"
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+  >
+    <ion-fab-button color="new" (click)="editOutfit()" type="button">
+      <ion-icon name="brush"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

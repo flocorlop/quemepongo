@@ -2,22 +2,18 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { ProfileEditPage } from './profile-edit.page';
 
-import { ProfilePage } from './profile.page';
+import { ProfileEditRoutingModule } from './profile-edit-routing.module';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: ProfilePage
-      }
-    ])
+    ProfileEditRoutingModule
   ],
-  declarations: [ProfilePage]
+  declarations: [ProfileEditPage]
 })
-export class ProfilePageModule {}
+export class ProfileEditPageModule { }

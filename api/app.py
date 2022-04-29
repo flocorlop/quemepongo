@@ -5,7 +5,7 @@ import json
 from profiles import profiles
 from logging import exception
 # from outfits import outfits
-from Models import db, Outfits
+from Models import db, Outfits, Profiles
 from sqlalchemy import func
 from sqlalchemy import select
 from sqlalchemy import table, column
@@ -26,7 +26,7 @@ from keras.preprocessing.image import img_to_array
 app = Flask(__name__)
 
 #config bbdd
-app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///C:\\bbdd_tfg\\outfits.db"
+app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///C:\\bbdd_tfg\\melopongo.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
@@ -40,16 +40,22 @@ def ping():
 # Get Data Routes
 @app.route('/profiles')
 def getProfiles():
-    return jsonify(profiles)
+    profiles = Profiles.query.all()
+    profiles = [o.serialize() for o in profiles]
+    return jsonify(profiles), 200
 
 
 @app.route('/profiles/<string:username>')
 def getProfile(username):
-    user = [
-        u for u in profiles if u['username'] == username]
-    if (len(user) > 0):
-        return jsonify(user[0])
-    return jsonify({'message': 'Profile Not found'})
+    try:
+        profile = Profiles.query.filter_by(username=username).first()
+        if not profile:
+            return jsonify({"msg": "Este perfil no existe"}), 404
+        else:
+            return jsonify(profile.serialize()),200
+    except Exception:
+        exception("[SERVER]: Error ->")
+        return jsonify({"msg": "Ha ocurrido un error"}), 500 
 
 # Create Data Routes
 @app.route('/profiles', methods=['POST'])
@@ -80,15 +86,23 @@ def editProfile(username):
     return jsonify({'message': 'Profile Not found'})
 
 # DELETE Data Route
-@app.route('/profiles/<string:username>', methods=['DELETE'])
-def deleteProfile(username):
-    userFound = [u for u in profiles if u['username'] == username]
-    if len(userFound) > 0:
-        profiles.remove(userFound[0])
-        return jsonify({
-            'message': 'Profile Deleted',
-            'profiles': profiles
-        })
+@app.route('/profiles/delete/<string:id>',methods=['DELETE'])
+def deleteProfile(id):
+    try:
+        profiles = Profiles.query.all()
+        p = Profiles.query.filter_by(id=id).first()
+        if not p:
+            return jsonify({"msg": "Este outfit no existe"}), 404
+        else:
+            db.session.delete(p)
+            db.session.commit()
+            print("borrado profile")
+            profiles = Outfits.query.all()
+            profiles = [o.serialize() for o in profiles]
+            return jsonify(profiles),200
+    except Exception:
+        exception("[SERVER]: Error ->")
+        return jsonify({"msg": "Error al borrar el outfit"}), 500     
 #endregion
 
 
@@ -97,47 +111,50 @@ def deleteProfile(username):
 def getOutfits():
     outfits = Outfits.query.all()
     outfits = [o.serialize() for o in outfits]
-    return jsonify(outfits)
+    return jsonify(outfits), 200
 
 @app.route('/outfits/<string:id>',methods=['GET'])
 def getOutfit(id):
     try:
         outfit = Outfits.query.filter_by(id=id).first()
         if not outfit:
-            return jsonify({"msg": "Este outfit no existe"}), 200
+            return jsonify({"msg": "Este outfit no existe"}), 404
         else:
             return jsonify(outfit.serialize()),200
     except Exception:
         exception("[SERVER]: Error ->")
         return jsonify({"msg": "Ha ocurrido un error"}), 500            
 
-@app.route('/outfits/<string:id>/edit',methods=['UPDATE'])
-def editOutfit(id):
-    try:
-        print("aqui editar")
-        outfit = Outfits.query.filter_by(id=id).first()
-        if not outfit:
-            return jsonify({"msg": "Este outfit no existe"}), 200
-        else:
-            return jsonify(outfit.serialize()),200
-    except Exception:
-        exception("[SERVER]: Error ->")
-        return jsonify({"msg": "Ha ocurrido un error"}), 500            
+# @app.route('/outfits/<string:id>/edit',methods=['UPDATE'])
+# def editOutfit(id):
+#     try:
+#         print("aqui editar")
+#         outfit = Outfits.query.filter_by(id=id).first()
+#         if not outfit:
+#             return jsonify({"msg": "Este outfit no existe"}), 404
+#         else:
+#             return jsonify(outfit.serialize()),200
+#     except Exception:
+#         exception("[SERVER]: Error ->")
+#         return jsonify({"msg": "Ha ocurrido un error"}), 500            
 
 @app.route('/outfits/delete/<string:id>',methods=['DELETE'])
 def deleteOutfit(id):
     try:
+        outfits = Outfits.query.all()
         outfit = Outfits.query.filter_by(id=id).first()
         if not outfit:
-            return jsonify({"msg": "Este outfit no existe"}), 200
+            return jsonify({"msg": "Este outfit no existe"}), 404
         else:
             db.session.delete(outfit)
             db.session.commit()
             print("borrado outfit")
-            return jsonify(outfit.serialize()),200
+            outfits = Outfits.query.all()
+            outfits = [o.serialize() for o in outfits]
+            return jsonify(outfits),200
     except Exception:
         exception("[SERVER]: Error ->")
-        return jsonify({"msg": "Ha ocurrido un error"}), 500            
+        return jsonify({"msg": "Error al borrar el outfit"}), 500            
 
 @app.route("/outfits/new-outfit/save", methods=["POST"])
 def saveOutfit():
@@ -152,31 +169,29 @@ def saveOutfit():
         newOutfit = Outfits(id,percentage,title,photo,description)
         db.session.add(newOutfit)
         db.session.commit()
-
-        return jsonify(newOutfit.serialize()) , 200
+        print("nuevo outfit")
+        return jsonify(newOutfit.serialize()) , 201
     except Exception:
         exception("\n[SERVER]: Error adding outfit. Log: \n")
-        return jsonify({"msg": "Algo ha salido mal"}), 500
+        return jsonify({"msg": "Error al guardar outfit"}), 500
 
 @app.route("/outfits/edit/save", methods=["POST"])
 def saveEditOutfit():
     try:
         dataReceived = request.get_json(force=True)
         id = dataReceived[0]["id"]
-        #  percentage = dataReceived[0]["percentage"]
         newT = dataReceived[0]["title"]
-        # photo = dataReceived[0]["image_encoded"]
         newDesc = dataReceived[0]["description"]
         
         itemOutfit = Outfits.query.filter_by(id=id).first()
         itemOutfit.title = newT
         itemOutfit.description = newDesc
         db.session.commit()
-
+        print("outfit editado")
         return jsonify(itemOutfit.serialize()) , 200
     except Exception:
-        exception("\n[SERVER]: Error adding outfit. Log: \n")
-        return jsonify({"msg": "Algo ha salido mal"}), 500
+        exception("\n[SERVER]: Error editing outfit. Log: \n")
+        return jsonify({"msg": "Error al guardar outfit"}), 500
 #endregion
 
 

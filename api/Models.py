@@ -34,3 +34,35 @@ class Outfits(db.Model):
             "imageURL": self.imageURL,
             "description": self.description
         }    
+class Profiles(db.Model):
+    id = db.Column(db.Integer, primary_key=True,nullable=False)
+    name = db.Column(db.String(50), nullable=False)
+    username = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+    imageURL = db.Column(db.String(200), nullable=False)
+
+    def __init__(self,rowid, name,username,email, imageURL):
+        super().__init__()
+        self.id = rowid
+        self.name = name
+        self.username = username
+        self.email = email
+        self.imageURL = imageURL
+
+    def __str__(self):
+        return "\nId: {}. Name: {}. Username: {}. Email: {}. \n".format(
+            self.id,
+            self.name,
+            self.username,
+            self.email,
+             self.imageURL
+        )  
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "username": self.username,
+            "email": self.email,
+            "imageURL": self.imageURL
+        }    

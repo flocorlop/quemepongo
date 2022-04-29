@@ -1,5 +1,6 @@
 export interface Profile {
     name: string;
     username: string;
-    email: string
+    email: string;
+    id: bigint;
 }

@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar color="new">
+    <ion-title>Add a new profile</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goToHome()"> </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-col>
+      <ion-card>
+        <ion-card-content>
+          <ion-input
+            placeholder="Write a username"
+            type="text"
+            #user
+          ></ion-input>
+          <ion-input
+            placeholder="Write your name"
+            type="text"
+            #name
+          ></ion-input>
+          <ion-input
+            placeholder="Write your email"
+            type="text"
+            #mail
+          ></ion-input>
+          <img src="{{cardImageBase64}}" #image />
+
+          <input
+            type="file"
+            class="file-input"
+            (change)="onFileSelected($event)"
+            #fileUpload
+          />
+          <!-- <ion-button color="new" (click)="onUpload()" expand="block"
+            >Predict</ion-button
+          > -->
+          <ion-button
+            color="success"
+            expand="block"
+            (click)="saveNewProfile(user, name, mail)"
+          >
+            Save
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+      <!-- <ion-card *ngIf="outOfRange; else viewP">
+        <ion-card-content>
+          <h3>No ha sido posible predecir esta imagen</h3>
+        </ion-card-content>
+      </ion-card>
+      <ng-template #viewP>
+        <ion-card *ngIf="predictionResP">
+          <ion-card-content>
+            <h3>Prediction: {{predictionResP}} %</h3>
+          </ion-card-content>
+        </ion-card> 
+      </ng-template>-->
+    </ion-col>
+  </ion-row>
+</ion-content>

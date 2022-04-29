@@ -1,0 +1,8 @@
+<ion-card [routerLink]="['/profiles', profileItem.id]">
+  <ion-img [src]="profileItem.imageURL"></ion-img>
+  <ion-card-header>
+    <ion-card-subtitle>{{ profileItem.name }}</ion-card-subtitle>
+    <ion-card-title>{{ profileItem.username }}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content> {{ profileItem.email }}</ion-card-content>
+</ion-card>

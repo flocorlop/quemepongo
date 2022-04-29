@@ -34,16 +34,39 @@ const routes: Routes = [
   },
   {
     path: "profiles",
-    loadChildren: () =>
-      import("./home/profile/profile.module").then(
-        m => m.ProfilePageModule
-      )
-  },
-  {
-    path: "home",
-    loadChildren: () =>
-      import("./home/home.module").then(m => m.HomePageModule)
+    children: [
+      {
+        path: "",
+        loadChildren: () =>
+          import("./profiles/profiles.module").then(m => m.ProfilesPageModule)
+      },
+      {
+        path: ":profileId",
+        loadChildren: () =>
+          import("./profiles/profile-detail/profile-detail.module").then(
+            m => m.ProfileDetailPageModule
+          )
+      },
+      {
+        path: "edit/:profileId",
+        loadChildren: () =>
+          import("./profiles/profile-edit/profile-edit.module").then(m => m.ProfileEditPageModule)
+      },
+      {
+        path: "new-profile",
+        loadChildren: () =>
+          import("./profiles/profile-add/profile-add.module").then(
+            m => m.ProfileAddPageModule
+          )
+      }
+    ]
   }
+  // ,
+  // {
+  //   path: "home",
+  //   loadChildren: () =>
+  //     import("./home/home.module").then(m => m.HomePageModule)
+  // }
 ];
 
 @NgModule({

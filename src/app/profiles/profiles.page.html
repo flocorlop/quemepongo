@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="new">
+    <ion-title>Profiles</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-fab vertical="top" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="goToProfile()" color="warning">
+    <ion-icon name="body"></ion-icon>
+  </ion-fab-button>
+</ion-fab> -->
+
+<ion-content>
+  <ion-list>
+    <app-profile-item
+      *ngFor="let profile of profiles"
+      [profileItem]="profile"
+    ></app-profile-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="warning" (click)="addNewProfile()" type="button">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
