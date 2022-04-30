@@ -21,7 +21,11 @@ export class ProfileService {
     // return this.http.get<any>('https://jsonplaceholder.typicode.com/photos?_limit=20');
   }
   getProfile(user) {
-    let url = this.url + user;
+    let url = this.url + "/" + user;
+    return this.http.get<any>(url);
+  }
+  getProfileById(id) {
+    let url = this.url + "/id/" + id;
     return this.http.get<any>(url);
   }
   deleteProfile(profileId: string) {

@@ -57,6 +57,19 @@ def getProfile(username):
         exception("[SERVER]: Error ->")
         return jsonify({"msg": "Ha ocurrido un error"}), 500 
 
+@app.route('/profiles/id/<string:id>')
+def getProfileId(id):
+    try:
+        profile = Profiles.query.filter_by(id=id).first()
+        if not profile:
+            return jsonify({"msg": "Este perfil no existe"}), 404
+        else:
+            return jsonify(profile.serialize()),200
+    except Exception:
+        exception("[SERVER]: Error ->")
+        return jsonify({"msg": "Ha ocurrido un error"}), 500 
+
+
 # Create Data Routes
 @app.route('/profiles', methods=['POST'])
 def addProfile():

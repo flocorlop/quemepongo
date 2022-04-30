@@ -20,29 +20,16 @@ export class ProfileDetailPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.predictionColor = "light";
     this.activatedRoute.paramMap.subscribe(paramMap => {
-      if (!paramMap.has("profileId")) {
+      if (!paramMap.has("username")) {
         // redirect
         this.router.navigate(['/profiles']);
       }
-      // const idO = paramMap.get("outfitId");
-      // this.outfit = this.outfitsService.getProfile(idO)
-      //   .subscribe(data => {
-      //     this.outfit = data;
-      //     if (this.outfit.percentage >= 0 && this.outfit.percentage < 25) {
-      //       this.predictionColor = "025";
-      //     }
-      //     else if (this.outfit.percentage >= 25 && this.outfit.percentage < 50) {
-      //       this.predictionColor = "2550";
-      //     }
-      //     else if (this.outfit.percentage >= 50 && this.outfit.percentage < 75) {
-      //       this.predictionColor = "5075";
-      //     }
-      //     else if (this.outfit.percentage >= 75 && this.outfit.percentage <= 100) {
-      //       this.predictionColor = "75100";
-      //     }
-      //   });
+      const u = paramMap.get("username");
+      this.profile = this.profileService.getProfile(u)
+        .subscribe(data => {
+          this.profile = data;
+        });
 
     });
   }

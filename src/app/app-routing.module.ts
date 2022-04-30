@@ -41,12 +41,13 @@ const routes: Routes = [
           import("./profiles/profiles.module").then(m => m.ProfilesPageModule)
       },
       {
-        path: ":profileId",
+        path: ":username",
         loadChildren: () =>
           import("./profiles/profile-detail/profile-detail.module").then(
             m => m.ProfileDetailPageModule
           )
       },
+
       {
         path: "edit/:profileId",
         loadChildren: () =>

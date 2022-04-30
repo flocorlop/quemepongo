@@ -3,14 +3,14 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/profiles"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{profile.title}}</ion-title>
+    <ion-title>{{profile.username}}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-card>
     <ion-card-header>
       <ion-img [src]="profile.imageURL"></ion-img>
-      <ion-card-subtitle>{{profile.name}}% de ponertelo</ion-card-subtitle>
+      <ion-card-subtitle>{{profile.name}}</ion-card-subtitle>
       <ion-card-title>{{ profile.username }}</ion-card-title>
     </ion-card-header>
 
@@ -22,7 +22,7 @@
     horizontal="end"
     slot="fixed"
   >
-    <ion-fab-button color="new" (click)="editOutfit()" type="button">
+    <ion-fab-button color="new" (click)="editProfile()" type="button">
       <ion-icon name="brush"></ion-icon>
     </ion-fab-button>
   </ion-fab>
