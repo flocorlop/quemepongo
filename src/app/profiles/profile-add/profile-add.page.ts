@@ -16,9 +16,8 @@ export class ProfileAddPage implements OnInit {
   allowed_types = ['image/png', 'image/jpeg'];
   cardImageBase64: string;
   isImageSaved: boolean;
-  predictionRes;
-  predictionResP;
-  outOfRange: boolean = false;
+  resultPhoto;
+  ph;
   resultSave;
 
   constructor(private router: Router, private http: HttpClient, @Inject(LOCALE_ID) private locale: string, public alertController: AlertController) { }
@@ -27,21 +26,23 @@ export class ProfileAddPage implements OnInit {
     this.cardImageBase64 = "";
   }
 
-  saveNewProfile(title, desc) {
-    if (title.value === "") {
-      this.presentAlert('No se puede guardar', 'Por favor,', 'Inserta título');
-    } else if (desc.value === "") {
-      this.presentAlert('No se puede guardar', 'Por favor,', 'Inserta descripción');
+  saveNewProfile(user, name, mail) {
+    if (user.value === "") {
+      this.presentAlert('No se puede guardar', 'Por favor,', 'Inserta nombre de usuario');
+    } else if (name.value === "") {
+      this.presentAlert('No se puede guardar', 'Por favor,', 'Inserta nombre');
+    } else if (mail.value === "") {
+      this.presentAlert('No se puede guardar', 'Por favor,', 'Inserta email');
     } else if (this.cardImageBase64 === "") {
       this.presentAlert('No se puede guardar', 'Por favor,', 'Selecciona imagen');
-    } else if (this.predictionResP === undefined) { this.presentAlert('No se puede guardar', 'Por favor,', 'Pulsa botón para obtener predicción'); }
+    }
     else {
       const data = [
         {
-          "percentage": this.predictionResP,
-          "title": title.value,
-          "image_encoded": this.cardImageBase64,
-          "description": desc.value
+          "username": user.value,
+          "name": name.value,
+          "mail": mail.value,
+          "photo": this.cardImageBase64
         }];
 
       this.resultSave = this.http.post('http://127.0.0.1:4000/profiles/new-profile/save', data)
@@ -91,23 +92,22 @@ export class ProfileAddPage implements OnInit {
       }
     };
     reader.readAsDataURL(this.selectedFile);
+    // this.onUpload();
   }
 
 
 
-  onUpload() {
-    if (this.cardImageBase64 === "") {
-      this.presentAlert('No hay ninguna imagen para predecir', 'Por favor,', 'Selecciona imagen');
+  // onUpload() {
+  //   if (this.cardImageBase64 === "") {
+  //     this.presentAlert('No hay ninguna imagen', 'Por favor,', 'Selecciona imagen');
 
-    } else {
-      const data = [{ "image_encoded": this.cardImageBase64 }];
+  //   } else {
+  //     const data = [{ "image_encoded": this.cardImageBase64 }];
 
-      this.predictionRes = this.http.post('http://127.0.0.1:4000/profiles/new-profile/predict', data)
-        .subscribe(res => {
-          this.predictionRes = res;
-          this.predictionResP = this.predictionRes.prediction.res;
-          this.predictionResP = formatNumber(this.predictionResP, this.locale, '1.2-2');
-        });
-    }
-  }
+  //      this.resultPhoto = this.http.post('http://127.0.0.1:4000/profiles/new-profile/photo', data)
+  //        .subscribe(res => {
+  //        this.ph = res;
+  //       });
+  //   }
+  // }
 }

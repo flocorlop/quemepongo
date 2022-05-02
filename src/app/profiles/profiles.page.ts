@@ -19,5 +19,7 @@ export class ProfilePage implements OnInit {
       });
 
   }
-
+  addNewProfile() {
+    this.router.navigate(['/new-profile']);
+  }
 }

@@ -71,32 +71,43 @@ def getProfileId(id):
 
 
 # Create Data Routes
-@app.route('/profiles', methods=['POST'])
+@app.route('/profiles/new-profile/save', methods=["POST"])
 def addProfile():
-    user = [
-        u for u in profiles if u['username'] == request.json['username']]
-    if (len(user) == 0):
-        new_profile = {
-            'name': request.json['name'],
-            'username': request.json['username'],
-            'email': request.json['email']
-        }
-        profiles.append(new_profile)
-        return jsonify(profiles)
-    return jsonify({'message': 'Profile exists yet.'})
+    try:
+        dataReceived = request.get_json(force=True)
+        id = Profiles.query.count() +1
+        username = dataReceived[0]["username"]
+        name = dataReceived[0]["name"]
+        photo = dataReceived[0]["photo"]
+        mail = dataReceived[0]["mail"]
+        
+        newP = Profiles(id,name,username,mail,photo)
+        db.session.add(newP)
+        db.session.commit()
+        print("new profile")
+        return jsonify(newP.serialize()) , 201
+    except Exception:
+        exception("\n[SERVER]: Error adding outfit. Log: \n")
+        return jsonify({"msg": "Error al guardar outfit"}), 500
 
 # Update Data Route
-@app.route('/profiles/<string:username>', methods=['PUT'])
-def editProfile(username):
-    userFound = [u for u in profiles if u['username'] == username]
-    if (len(userFound) > 0):
-        userFound[0]['name'] = request.json['name']
-        userFound[0]['email'] = request.json['email']
-        return jsonify({
-            'message': 'Profile Updated',
-            'profile': userFound[0]
-        })
-    return jsonify({'message': 'Profile Not found'})
+@app.route('/profiles/edit/save', methods=["POST"])
+def editProfileSave():
+    try:
+        dataReceived = request.get_json(force=True)
+        id = dataReceived[0]["id"]
+        newT = dataReceived[0]["title"]
+        newDesc = dataReceived[0]["description"]
+        
+        itemOutfit = Outfits.query.filter_by(id=id).first()
+        itemOutfit.title = newT
+        itemOutfit.description = newDesc
+        db.session.commit()
+        print("outfit editado")
+        return jsonify(itemOutfit.serialize()) , 200
+    except Exception:
+        exception("\n[SERVER]: Error editing outfit. Log: \n")
+        return jsonify({"msg": "Error al guardar outfit"}), 500
 
 # DELETE Data Route
 @app.route('/profiles/delete/<string:id>',methods=['DELETE'])
@@ -110,7 +121,7 @@ def deleteProfile(id):
             db.session.delete(p)
             db.session.commit()
             print("borrado profile")
-            profiles = Outfits.query.all()
+            profiles = Profiles.query.all()
             profiles = [o.serialize() for o in profiles]
             return jsonify(profiles),200
     except Exception:

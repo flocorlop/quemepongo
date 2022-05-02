@@ -47,27 +47,19 @@ const routes: Routes = [
             m => m.ProfileDetailPageModule
           )
       },
-
       {
         path: "edit/:profileId",
         loadChildren: () =>
           import("./profiles/profile-edit/profile-edit.module").then(m => m.ProfileEditPageModule)
       },
-      {
-        path: "new-profile",
-        loadChildren: () =>
-          import("./profiles/profile-add/profile-add.module").then(
-            m => m.ProfileAddPageModule
-          )
-      }
     ]
+  }, {
+    path: "new-profile",
+    loadChildren: () =>
+      import("./profiles/profile-add/profile-add.module").then(
+        m => m.ProfileAddPageModule
+      )
   }
-  // ,
-  // {
-  //   path: "home",
-  //   loadChildren: () =>
-  //     import("./home/home.module").then(m => m.HomePageModule)
-  // }
 ];
 
 @NgModule({
