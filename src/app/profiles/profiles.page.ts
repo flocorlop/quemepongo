@@ -22,4 +22,7 @@ export class ProfilePage implements OnInit {
   addNewProfile() {
     this.router.navigate(['/new-profile']);
   }
+  goHome() {
+    this.router.navigate(['/outfits']);
+  }
 }

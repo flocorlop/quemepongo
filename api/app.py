@@ -87,27 +87,34 @@ def addProfile():
         print("new profile")
         return jsonify(newP.serialize()) , 201
     except Exception:
-        exception("\n[SERVER]: Error adding outfit. Log: \n")
-        return jsonify({"msg": "Error al guardar outfit"}), 500
+        exception("\n[SERVER]: Error adding profile. Log: \n")
+        return jsonify({"msg": "Error al guardar perfil"}), 500
 
 # Update Data Route
 @app.route('/profiles/edit/save', methods=["POST"])
 def editProfileSave():
     try:
         dataReceived = request.get_json(force=True)
-        id = dataReceived[0]["id"]
-        newT = dataReceived[0]["title"]
-        newDesc = dataReceived[0]["description"]
-        
-        itemOutfit = Outfits.query.filter_by(id=id).first()
-        itemOutfit.title = newT
-        itemOutfit.description = newDesc
+        idP = dataReceived[0]["id"]
+        newU = dataReceived[0]["username"]
+        newN = dataReceived[0]["name"]
+        newM = dataReceived[0]["mail"]
+        photo = dataReceived[0]["photo"]
+        # "username": user.value,
+        #   "name": name.value,
+        #   "mail": mail.value,
+        #   "photo": this.cardImageBase64
+        itemP = Profiles.query.filter_by(id=idP).first()
+        itemP.username = newU
+        itemP.name = newN
+        itemP.email = newM
+        itemP.imageURL = photo
         db.session.commit()
-        print("outfit editado")
-        return jsonify(itemOutfit.serialize()) , 200
+        print("perfil editado")
+        return jsonify(itemP.serialize()) , 200
     except Exception:
-        exception("\n[SERVER]: Error editing outfit. Log: \n")
-        return jsonify({"msg": "Error al guardar outfit"}), 500
+        exception("\n[SERVER]: Error editing profile. Log: \n")
+        return jsonify({"msg": "Error al guardar perfil"}), 500
 
 # DELETE Data Route
 @app.route('/profiles/delete/<string:id>',methods=['DELETE'])
@@ -116,7 +123,7 @@ def deleteProfile(id):
         profiles = Profiles.query.all()
         p = Profiles.query.filter_by(id=id).first()
         if not p:
-            return jsonify({"msg": "Este outfit no existe"}), 404
+            return jsonify({"msg": "Este perfil no existe"}), 404
         else:
             db.session.delete(p)
             db.session.commit()
@@ -126,7 +133,7 @@ def deleteProfile(id):
             return jsonify(profiles),200
     except Exception:
         exception("[SERVER]: Error ->")
-        return jsonify({"msg": "Error al borrar el outfit"}), 500     
+        return jsonify({"msg": "Error al borrar el perfil"}), 500     
 #endregion
 
 

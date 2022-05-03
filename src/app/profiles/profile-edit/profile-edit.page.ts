@@ -55,10 +55,11 @@ export class ProfileEditPage implements OnInit {
     } else {
       const data = [
         {
+          "id": this.profile.id,
           "username": user.value,
           "name": name.value,
           "mail": mail.value,
-          "id": this.profile.id
+          "photo": this.cardImageBase64
         }];
 
       this.resultSave = this.http.post('http://127.0.0.1:4000/profiles/edit/save', data)
@@ -66,7 +67,7 @@ export class ProfileEditPage implements OnInit {
           this.resultSave = res;
         });
       console.log("actualizado");
-      let urlO = "/profiles/" + this.profile.id;
+      let urlO = "/profiles/" + user.value;
       this.router.navigate([urlO])
         .then(() => {
           window.location.reload();

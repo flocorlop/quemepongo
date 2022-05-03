@@ -4,11 +4,11 @@
   </ion-toolbar>
 </ion-header>
 
-<!-- <ion-fab vertical="top" horizontal="end" slot="fixed">
-  <ion-fab-button (click)="goToProfile()" color="warning">
-    <ion-icon name="body"></ion-icon>
+<ion-fab vertical="top" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="goHome()" color="warning">
+    <ion-icon name="home"></ion-icon>
   </ion-fab-button>
-</ion-fab> -->
+</ion-fab>
 
 <ion-content>
   <ion-list>
@@ -19,7 +19,7 @@
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="warning" (click)="addNewProfile()" type="button">
+    <ion-fab-button color="profile" (click)="addNewProfile()" type="button">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
