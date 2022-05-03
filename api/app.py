@@ -40,7 +40,7 @@ def ping():
 # Get Data Routes
 @app.route('/profiles')
 def getProfiles():
-    profiles = Profiles.query.all()
+    profiles = Profiles.query.filter_by(visible=1).all()
     profiles = [o.serialize() for o in profiles]
     return jsonify(profiles), 200
 
@@ -48,7 +48,7 @@ def getProfiles():
 @app.route('/profiles/<string:username>')
 def getProfile(username):
     try:
-        profile = Profiles.query.filter_by(username=username).first()
+        profile = Profiles.query.filter_by(username=username, visible=1).first()
         if not profile:
             return jsonify({"msg": "Este perfil no existe"}), 404
         else:
@@ -60,7 +60,7 @@ def getProfile(username):
 @app.route('/profiles/id/<string:id>')
 def getProfileId(id):
     try:
-        profile = Profiles.query.filter_by(id=id).first()
+        profile = Profiles.query.filter_by(id=id,visible=1).first()
         if not profile:
             return jsonify({"msg": "Este perfil no existe"}), 404
         else:
@@ -81,7 +81,7 @@ def addProfile():
         photo = dataReceived[0]["photo"]
         mail = dataReceived[0]["mail"]
         
-        newP = Profiles(id,name,username,mail,photo)
+        newP = Profiles(id,name,username,mail,photo,1)
         db.session.add(newP)
         db.session.commit()
         print("new profile")
@@ -120,15 +120,16 @@ def editProfileSave():
 @app.route('/profiles/delete/<string:id>',methods=['DELETE'])
 def deleteProfile(id):
     try:
-        profiles = Profiles.query.all()
-        p = Profiles.query.filter_by(id=id).first()
+        profiles = Profiles.query.filter_by(visible=1).all()
+        p = Profiles.query.filter_by(id=id, visible=1).first()
         if not p:
             return jsonify({"msg": "Este perfil no existe"}), 404
         else:
-            db.session.delete(p)
+            p.visible=0
+            # db.session.delete(p)
             db.session.commit()
-            print("borrado profile")
-            profiles = Profiles.query.all()
+            print("ocultado profile")
+            profiles = Profiles.query.filter_by(visible=1).all()
             profiles = [o.serialize() for o in profiles]
             return jsonify(profiles),200
     except Exception:

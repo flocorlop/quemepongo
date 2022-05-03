@@ -8,22 +8,25 @@ class Outfits(db.Model):
     title = db.Column(db.String(50), nullable=False)
     imageURL = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(500), nullable=False)
+    visible = db.Column(db.Integer, nullable=False)
 
-    def __init__(self,rowid, percentage,title,imageURL,description):
+    def __init__(self,rowid, percentage,title,imageURL,description,vis):
         super().__init__()
         self.id = rowid
         self.percentage = percentage
         self.title = title
         self.imageURL = imageURL
         self.description = description
+        self.visible = vis
 
     def __str__(self):
-        return "\nId: {}. Percentage: {}. Title: {}. ImageURL: {}. Description: {}.\n".format(
+        return "\nId: {}. Percentage: {}. Title: {}. ImageURL: {}. Description: {}.\n Visible: {}".format(
             self.id,
             self.percentage,
             self.title,
             self.imageURL,
-            self.description
+            self.description,
+            self.visible
         )  
 
     def serialize(self):
@@ -32,7 +35,8 @@ class Outfits(db.Model):
             "percentage": self.percentage,
             "title": self.title,
             "imageURL": self.imageURL,
-            "description": self.description
+            "description": self.description,
+            "visible": self.visible
         }    
 class Profiles(db.Model):
     id = db.Column(db.Integer, primary_key=True,nullable=False)
@@ -40,22 +44,25 @@ class Profiles(db.Model):
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     imageURL = db.Column(db.String(200), nullable=False)
+    visible = db.Column(db.Integer, nullable=False)
 
-    def __init__(self,rowid, name,username,email, imageURL):
+    def __init__(self,rowid, name,username,email, imageURL, vis):
         super().__init__()
         self.id = rowid
         self.name = name
         self.username = username
         self.email = email
         self.imageURL = imageURL
+        self.visible = vis
 
     def __str__(self):
-        return "\nId: {}. Name: {}. Username: {}. Email: {}. \n".format(
+        return "\nId: {}. Name: {}. Username: {}. Email: {}. \n Visible: {}".format(
             self.id,
             self.name,
             self.username,
             self.email,
-             self.imageURL
+             self.imageURL,
+             self.visible
         )  
 
     def serialize(self):
@@ -64,5 +71,6 @@ class Profiles(db.Model):
             "name": self.name,
             "username": self.username,
             "email": self.email,
-            "imageURL": self.imageURL
+            "imageURL": self.imageURL,
+            "visible" : self.visible
         }    
