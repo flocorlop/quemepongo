@@ -198,7 +198,7 @@ def saveOutfit():
         photo = dataReceived[0]["image_encoded"]
         description = dataReceived[0]["description"]
         
-        newOutfit = Outfits(id,percentage,title,photo,description)
+        newOutfit = Outfits(id,percentage,title,photo,description,1)
         db.session.add(newOutfit)
         db.session.commit()
         print("nuevo outfit")
