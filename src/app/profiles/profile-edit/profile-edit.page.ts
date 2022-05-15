@@ -66,7 +66,6 @@ export class ProfileEditPage implements OnInit {
         .subscribe(res => {
           this.resultSave = res;
         });
-      console.log("actualizado");
       let urlO = "/profiles/" + user.value;
       this.router.navigate([urlO])
         .then(() => {

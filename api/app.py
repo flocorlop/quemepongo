@@ -21,6 +21,7 @@ from keras.models import Sequential
 from keras.models import load_model
 from keras.preprocessing.image import ImageDataGenerator
 from keras.preprocessing.image import img_to_array
+import re
 #endregion
 
 app = Flask(__name__)
@@ -29,8 +30,20 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///C:\\bbdd_tfg\\melopongo.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
-
+def checkMail(email):
+ 
+    # pass the regular expression
+    # and the string into the fullmatch() method
+    if(re.fullmatch(regex, email)):
+        print("Valid Email")
+ 
+    else:
+        print("Invalid Email")
+def checkPhoto(ph) :
+    print('check photo')
+    
 # Testing Route
 @app.route('/ping', methods=['GET'])
 def ping():
@@ -80,7 +93,8 @@ def addProfile():
         name = dataReceived[0]["name"]
         photo = dataReceived[0]["photo"]
         mail = dataReceived[0]["mail"]
-        
+        checkMail(mail)
+        checkPhoto(photo)
         newP = Profiles(id,name,username,mail,photo,1)
         db.session.add(newP)
         db.session.commit()
@@ -104,7 +118,7 @@ def editProfileSave():
         #   "name": name.value,
         #   "mail": mail.value,
         #   "photo": this.cardImageBase64
-        itemP = Profiles.query.filter_by(id=idP).first()
+        itemP = Profiles.query.filter_by(id=idP, visible=1).first()
         itemP.username = newU
         itemP.name = newN
         itemP.email = newM
@@ -141,14 +155,14 @@ def deleteProfile(id):
 #region Outfits
 @app.route("/outfits")
 def getOutfits():
-    outfits = Outfits.query.all()
+    outfits = Outfits.query.filter_by(visible=1).all()
     outfits = [o.serialize() for o in outfits]
     return jsonify(outfits), 200
 
 @app.route('/outfits/<string:id>',methods=['GET'])
 def getOutfit(id):
     try:
-        outfit = Outfits.query.filter_by(id=id).first()
+        outfit = Outfits.query.filter_by(id=id, visible=1).first()
         if not outfit:
             return jsonify({"msg": "Este outfit no existe"}), 404
         else:
@@ -156,32 +170,21 @@ def getOutfit(id):
     except Exception:
         exception("[SERVER]: Error ->")
         return jsonify({"msg": "Ha ocurrido un error"}), 500            
-
-# @app.route('/outfits/<string:id>/edit',methods=['UPDATE'])
-# def editOutfit(id):
-#     try:
-#         print("aqui editar")
-#         outfit = Outfits.query.filter_by(id=id).first()
-#         if not outfit:
-#             return jsonify({"msg": "Este outfit no existe"}), 404
-#         else:
-#             return jsonify(outfit.serialize()),200
-#     except Exception:
-#         exception("[SERVER]: Error ->")
-#         return jsonify({"msg": "Ha ocurrido un error"}), 500            
+        
 
 @app.route('/outfits/delete/<string:id>',methods=['DELETE'])
 def deleteOutfit(id):
     try:
-        outfits = Outfits.query.all()
-        outfit = Outfits.query.filter_by(id=id).first()
+        outfits = Outfits.query.filter_by(visible=1).all()
+        outfit = Outfits.query.filter_by(id=id, visible=1).first()
         if not outfit:
             return jsonify({"msg": "Este outfit no existe"}), 404
         else:
-            db.session.delete(outfit)
+            outfit.visible=0
+            #db.session.delete(outfit)
             db.session.commit()
             print("borrado outfit")
-            outfits = Outfits.query.all()
+            outfits = Outfits.query.filter_by(visible=1).all()
             outfits = [o.serialize() for o in outfits]
             return jsonify(outfits),200
     except Exception:
@@ -215,7 +218,7 @@ def saveEditOutfit():
         newT = dataReceived[0]["title"]
         newDesc = dataReceived[0]["description"]
         
-        itemOutfit = Outfits.query.filter_by(id=id).first()
+        itemOutfit = Outfits.query.filter_by(id=id, visible=1).first()
         itemOutfit.title = newT
         itemOutfit.description = newDesc
         db.session.commit()

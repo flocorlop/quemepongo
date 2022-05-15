@@ -19,6 +19,8 @@ export class ProfileAddPage implements OnInit {
   resultPhoto;
   ph;
   resultSave;
+  img_width;
+  img_height;
 
   constructor(private router: Router, private http: HttpClient, @Inject(LOCALE_ID) private locale: string, public alertController: AlertController) { }
 
@@ -37,24 +39,48 @@ export class ProfileAddPage implements OnInit {
       this.presentAlert('No se puede guardar', 'Por favor,', 'Selecciona imagen');
     }
     else {
-      const data = [
-        {
-          "username": user.value,
-          "name": name.value,
-          "mail": mail.value,
-          "photo": this.cardImageBase64
-        }];
+      if (this.checkEmail(mail.value) && this.checkPhoto()) {
+        const data = [
+          {
+            "username": user.value,
+            "name": name.value,
+            "mail": mail.value,
+            "photo": this.cardImageBase64
+          }];
 
-      this.resultSave = this.http.post('http://127.0.0.1:4000/profiles/new-profile/save', data)
-        .subscribe(res => {
-          this.resultSave = res;
-        });
-      console.log("guardado");
-      this.router.navigate(['/profiles'])
-        .then(() => {
-          window.location.reload();
-        });
+        this.resultSave = this.http.post('http://127.0.0.1:4000/profiles/new-profile/save', data)
+          .subscribe(res => {
+            this.resultSave = res;
+          });
+        this.router.navigate(['/profiles'])
+          .then(() => {
+            window.location.reload();
+          });
+      }
     }
+  }
+
+  checkEmail(mail) {
+    //E-mail valiadtion using Regex
+    let regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+
+    if (!regexp.test(mail)) {
+      let isValid = false;
+      this.presentAlert('No se puede guardar', 'Por favor,', 'Inserta email válido');
+      return isValid;
+    } else {
+      let isValid = true;
+      return isValid;
+    }
+  }
+  checkPhoto() {
+    if (this.img_width > 3840 || this.img_height > 2160) {
+      this.presentAlert('No se puede guardar', 'Por favor,', 'Escoge otra foto menor a 3840x2160 pixeles');
+      return false;
+    } else {
+      return true;
+    }
+
   }
   async presentAlert(head, sub, mes) {
     const alert = await this.alertController.create({
@@ -76,7 +102,7 @@ export class ProfileAddPage implements OnInit {
     this.selectedFile = event.target.files[0];
 
     if (!this.allowed_types.includes(this.selectedFile.type)) {
-      imageError = 'Only Images are allowed ( JPG | PNG )';
+      imageError = 'Only Images are allowed ( JPG )';
       return false;
     }
     const reader = new FileReader();
@@ -84,30 +110,20 @@ export class ProfileAddPage implements OnInit {
       const image = new Image();
       image.src = e.target.result;
       image.onload = rs => {
-        const img_height = rs.currentTarget['height'];
-        const img_width = rs.currentTarget['width'];
-        const imgBase64Path = e.target.result;
-        this.cardImageBase64 = imgBase64Path;
-        this.isImageSaved = true;
+        this.img_height = rs.currentTarget['height'];
+        this.img_width = rs.currentTarget['width'];
+        if (this.img_width > 3840 || this.img_height > 2160) {
+          this.presentAlert('No se puede guardar', 'Por favor,', 'Escoge otra foto menor a 3840x2160 pixeles');
+          return false;
+        } else {
+          const imgBase64Path = e.target.result;
+          this.cardImageBase64 = imgBase64Path;
+          this.isImageSaved = true;
+          return true;
+        }
       }
     };
     reader.readAsDataURL(this.selectedFile);
-    // this.onUpload();
   }
 
-
-
-  // onUpload() {
-  //   if (this.cardImageBase64 === "") {
-  //     this.presentAlert('No hay ninguna imagen', 'Por favor,', 'Selecciona imagen');
-
-  //   } else {
-  //     const data = [{ "image_encoded": this.cardImageBase64 }];
-
-  //      this.resultPhoto = this.http.post('http://127.0.0.1:4000/profiles/new-profile/photo', data)
-  //        .subscribe(res => {
-  //        this.ph = res;
-  //       });
-  //   }
-  // }
 }

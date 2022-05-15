@@ -63,7 +63,6 @@ export class OutfitEditPage implements OnInit {
         .subscribe(res => {
           this.resultSave = res;
         });
-      console.log("actualizado");
       let urlO = "/outfits/" + this.outfit.id;
       this.router.navigate([urlO])
         .then(() => {

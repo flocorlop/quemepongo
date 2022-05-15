@@ -44,9 +44,9 @@
         </ion-card-content>
       </ion-card>
       <ng-template #viewP>
-        <ion-card *ngIf="predictionResP">
+        <ion-card *ngIf="predictionResP" color="{{predictionColor}}">
           <ion-card-content>
-            <h3>Prediction: {{predictionResP}} %</h3>
+            <h2>Prediction: {{predictionResP}} %</h2>
           </ion-card-content>
         </ion-card>
       </ng-template>

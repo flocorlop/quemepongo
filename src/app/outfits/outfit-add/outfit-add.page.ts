@@ -20,11 +20,13 @@ export class OutfitAddPage implements OnInit {
   predictionResP;
   outOfRange: boolean = false;
   resultSave;
+  predictionColor;
 
   constructor(private router: Router, private http: HttpClient, @Inject(LOCALE_ID) private locale: string, public alertController: AlertController) { }
 
   ngOnInit() {
     this.cardImageBase64 = "";
+    this.predictionColor = "light";
   }
 
   saveNewOutfit(title, desc) {
@@ -48,7 +50,6 @@ export class OutfitAddPage implements OnInit {
         .subscribe(res => {
           this.resultSave = res;
         });
-      console.log("guardado");
       this.router.navigate(['/outfits'])
         .then(() => {
           window.location.reload();
@@ -75,7 +76,7 @@ export class OutfitAddPage implements OnInit {
     this.selectedFile = event.target.files[0];
 
     if (!this.allowed_types.includes(this.selectedFile.type)) {
-      imageError = 'Only Images are allowed ( JPG | PNG )';
+      imageError = 'Only Images are allowed ( JPG )';
       return false;
     }
     const reader = new FileReader();
@@ -85,9 +86,15 @@ export class OutfitAddPage implements OnInit {
       image.onload = rs => {
         const img_height = rs.currentTarget['height'];
         const img_width = rs.currentTarget['width'];
-        const imgBase64Path = e.target.result;
-        this.cardImageBase64 = imgBase64Path;
-        this.isImageSaved = true;
+        if (img_width > 3840 || img_height > 2160) {
+          this.presentAlert('No se puede guardar', 'Por favor,', 'Escoge otra foto menor a 3840x2160 pixeles');
+          return false;
+        } else {
+          const imgBase64Path = e.target.result;
+          this.cardImageBase64 = imgBase64Path;
+          this.isImageSaved = true;
+          return true;
+        }
       }
     };
     reader.readAsDataURL(this.selectedFile);
@@ -105,9 +112,24 @@ export class OutfitAddPage implements OnInit {
       this.predictionRes = this.http.post('http://127.0.0.1:4000/outfits/new-outfit/predict', data)
         .subscribe(res => {
           this.predictionRes = res;
-          this.predictionResP = this.predictionRes.prediction.res;
-          this.predictionResP = formatNumber(this.predictionResP, this.locale, '1.2-2');
+          let predictionResN = this.predictionRes.prediction.res;
+          this.predictionResP = formatNumber(predictionResN, this.locale, '1.2-2');
+          this.presentAlert('Predicción para este outfit', '', this.predictionResP);
+
+          if (this.predictionResP >= 0 && this.predictionResP < 25) {
+            this.predictionColor = "025";
+          }
+          else if (this.predictionResP >= 25 && this.predictionResP < 50) {
+            this.predictionColor = "2550";
+          }
+          else if (this.predictionResP >= 50 && this.predictionResP < 75) {
+            this.predictionColor = "5075";
+          }
+          else if (this.predictionResP >= 75 && this.predictionResP <= 100) {
+            this.predictionColor = "75100";
+          }
         });
+
     }
   }
 }
