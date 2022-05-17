@@ -2,9 +2,7 @@ from datetime import datetime
 from turtle import title
 from flask import Flask, jsonify, request
 import json
-from profiles import profiles
 from logging import exception
-# from outfits import outfits
 from Models import db, Outfits, Profiles
 from sqlalchemy import func
 from sqlalchemy import select
@@ -114,10 +112,6 @@ def editProfileSave():
         newN = dataReceived[0]["name"]
         newM = dataReceived[0]["mail"]
         photo = dataReceived[0]["photo"]
-        # "username": user.value,
-        #   "name": name.value,
-        #   "mail": mail.value,
-        #   "photo": this.cardImageBase64
         itemP = Profiles.query.filter_by(id=idP, visible=1).first()
         itemP.username = newU
         itemP.name = newN
@@ -254,7 +248,6 @@ def predict():
     encoded = datasent[0]['image_encoded']
     encodedImg= encoded.partition(",")[2]
     encodedTypeImg = encoded.partition(",")[0]
-    #typeImg = guess_all_extensions(guess_type(encodedTypeImg)[0])
     if (encodedTypeImg == "data:image/jpeg;base64"):
         typeImg = ".jpeg"
         decoded = base64.b64decode(encodedImg)
@@ -269,10 +262,9 @@ def predict():
         response = {
             'prediction': {"res": percentage01}
         }
-        
         return jsonify(response)
     else:
-        raise Exception()
+        raise Exception("\n[SERVER]: Error predecir outfit. Log: \n")
 
 #endregion
 

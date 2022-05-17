@@ -13,7 +13,7 @@ import { AlertController } from '@ionic/angular';
 export class OutfitAddPage implements OnInit {
   fileName = '';
   selectedFile: File;
-  allowed_types = ['image/png', 'image/jpeg'];
+  allowed_types = ['image/jpeg'];
   cardImageBase64: string;
   isImageSaved: boolean;
   predictionRes;
@@ -56,6 +56,7 @@ export class OutfitAddPage implements OnInit {
         });
     }
   }
+
   async presentAlert(head, sub, mes) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -67,40 +68,41 @@ export class OutfitAddPage implements OnInit {
 
     await alert.present();
   }
+
   goToHome() {
     this.router.navigate(['/outfits']);
   }
 
   onFileSelected(event) {
-    let imageError = null;
     this.selectedFile = event.target.files[0];
 
     if (!this.allowed_types.includes(this.selectedFile.type)) {
-      imageError = 'Only Images are allowed ( JPG )';
+      this.presentAlert('No se puede subir una imagen en .PNG', 'Por favor,', 'Escoge otra foto');
+      this.cardImageBase64 = "";
       return false;
     }
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      const image = new Image();
-      image.src = e.target.result;
-      image.onload = rs => {
-        const img_height = rs.currentTarget['height'];
-        const img_width = rs.currentTarget['width'];
-        if (img_width > 3840 || img_height > 2160) {
-          this.presentAlert('No se puede guardar', 'Por favor,', 'Escoge otra foto menor a 3840x2160 pixeles');
-          return false;
-        } else {
-          const imgBase64Path = e.target.result;
-          this.cardImageBase64 = imgBase64Path;
-          this.isImageSaved = true;
-          return true;
+    else {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const image = new Image();
+        image.src = e.target.result;
+        image.onload = rs => {
+          const img_height = rs.currentTarget['height'];
+          const img_width = rs.currentTarget['width'];
+          if (img_width > 3840 || img_height > 2160) {
+            this.presentAlert('No se puede guardar', 'Por favor,', 'Escoge otra foto menor a 3840x2160 pixeles');
+            return false;
+          } else {
+            const imgBase64Path = e.target.result;
+            this.cardImageBase64 = imgBase64Path;
+            this.isImageSaved = true;
+            return true;
+          }
         }
-      }
-    };
-    reader.readAsDataURL(this.selectedFile);
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
   }
-
-
 
   onUpload() {
     if (this.cardImageBase64 === "") {
@@ -114,7 +116,7 @@ export class OutfitAddPage implements OnInit {
           this.predictionRes = res;
           let predictionResN = this.predictionRes.prediction.res;
           this.predictionResP = formatNumber(predictionResN, this.locale, '1.2-2');
-          this.presentAlert('Predicción para este outfit', '', this.predictionResP);
+          this.presentAlert('Predicción para este outfit', '', this.predictionResP + '%');
 
           if (this.predictionResP >= 0 && this.predictionResP < 25) {
             this.predictionColor = "025";
@@ -129,7 +131,7 @@ export class OutfitAddPage implements OnInit {
             this.predictionColor = "75100";
           }
         });
-
     }
   }
+
 }

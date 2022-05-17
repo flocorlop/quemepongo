@@ -22,7 +22,6 @@ export class ProfileDetailPage implements OnInit {
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(paramMap => {
       if (!paramMap.has("username")) {
-        // redirect
         this.router.navigate(['/profiles']);
       }
       const u = paramMap.get("username");
@@ -32,31 +31,6 @@ export class ProfileDetailPage implements OnInit {
         });
 
     });
-  }
-
-  async deleteProfile() {
-    const alertElment = await this.alertCtrl.create({
-      header: "Are you Sure, You want to delete this profile?",
-      message: "Be carefull.",
-      buttons: [
-        {
-          text: "Cancel",
-          cssClass: 'success',
-        },
-        {
-          text: "Delete",
-          cssClass: 'danger',
-          handler: () => {
-            this.profileService.deleteProfile(this.profile.id);
-            this.router.navigate(['/profiles'])
-              .then(() => {
-                window.location.reload();
-              });
-          }
-        }
-      ]
-    });
-    await alertElment.present();
   }
 
   editProfile() {

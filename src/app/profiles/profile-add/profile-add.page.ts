@@ -98,32 +98,34 @@ export class ProfileAddPage implements OnInit {
   }
 
   onFileSelected(event) {
-    let imageError = null;
     this.selectedFile = event.target.files[0];
 
     if (!this.allowed_types.includes(this.selectedFile.type)) {
-      imageError = 'Only Images are allowed ( JPG )';
+      this.presentAlert('No se puede subir una imagen con otro formato diferente a .JPG o .PNG', 'Por favor,', 'Escoge otra foto');
+      this.cardImageBase64 = "";
       return false;
     }
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      const image = new Image();
-      image.src = e.target.result;
-      image.onload = rs => {
-        this.img_height = rs.currentTarget['height'];
-        this.img_width = rs.currentTarget['width'];
-        if (this.img_width > 3840 || this.img_height > 2160) {
-          this.presentAlert('No se puede guardar', 'Por favor,', 'Escoge otra foto menor a 3840x2160 pixeles');
-          return false;
-        } else {
-          const imgBase64Path = e.target.result;
-          this.cardImageBase64 = imgBase64Path;
-          this.isImageSaved = true;
-          return true;
+    else {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const image = new Image();
+        image.src = e.target.result;
+        image.onload = rs => {
+          this.img_height = rs.currentTarget['height'];
+          this.img_width = rs.currentTarget['width'];
+          if (this.img_width > 3840 || this.img_height > 2160) {
+            this.presentAlert('No se puede guardar', 'Por favor,', 'Escoge otra foto menor a 3840x2160 pixeles');
+            return false;
+          } else {
+            const imgBase64Path = e.target.result;
+            this.cardImageBase64 = imgBase64Path;
+            this.isImageSaved = true;
+            return true;
+          }
         }
-      }
-    };
-    reader.readAsDataURL(this.selectedFile);
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
   }
 
 }

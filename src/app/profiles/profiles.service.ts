@@ -14,11 +14,6 @@ export class ProfileService {
 
   getProfiles() {
     return this.http.get<any>(this.url);
-    // .pipe(
-    //   map(this.extractData),
-    //   catchError(this.handleErrorObservable)
-    // )
-    // return this.http.get<any>('https://jsonplaceholder.typicode.com/photos?_limit=20');
   }
   getProfile(user) {
     let url = this.url + "/" + user;
@@ -43,12 +38,12 @@ export class ProfileService {
       });
 
   }
-  private extractData(res: any) {
-    let body = res;
-    return body;
-  }
-  private handleErrorObservable(error: any) {
-    console.error(error.message || error);
-    return throwError(error);
-  }
+  // private extractData(res: any) {
+  //   let body = res;
+  //   return body;
+  // }
+  // private handleErrorObservable(error: any) {
+  //   console.error(error.message || error);
+  //   return throwError(error);
+  // }
 }

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="new">
-    <ion-title>Add a new outfit</ion-title>
+    <ion-title>Añadir outfit</ion-title>
     <ion-buttons slot="start">
       <ion-back-button (click)="goToHome()"> </ion-back-button>
     </ion-buttons>
@@ -12,12 +12,8 @@
     <ion-col>
       <ion-card>
         <ion-card-content>
-          <ion-input placeholder="Write a Title" type="text" #title></ion-input>
-          <ion-input
-            placeholder="Write a Description"
-            type="text"
-            #desc
-          ></ion-input>
+          <ion-input placeholder="Título" type="text" #title></ion-input>
+          <ion-input placeholder="Descripción" type="text" #desc></ion-input>
           <img src="{{cardImageBase64}}" #image />
 
           <input
@@ -27,14 +23,14 @@
             #fileUpload
           />
           <ion-button color="new" (click)="onUpload()" expand="block"
-            >Predict</ion-button
+            >Predecir</ion-button
           >
           <ion-button
             color="success"
             expand="block"
             (click)="saveNewOutfit(title, desc)"
           >
-            Save
+            Guardar
           </ion-button>
         </ion-card-content>
       </ion-card>
@@ -46,10 +42,16 @@
       <ng-template #viewP>
         <ion-card *ngIf="predictionResP" color="{{predictionColor}}">
           <ion-card-content>
-            <h2>Prediction: {{predictionResP}} %</h2>
+            <h2>Predicción: {{predictionResP}} %</h2>
           </ion-card-content>
         </ion-card>
       </ng-template>
     </ion-col>
   </ion-row>
 </ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>FCL 2022</ion-title>
+  </ion-toolbar>
+</ion-footer>

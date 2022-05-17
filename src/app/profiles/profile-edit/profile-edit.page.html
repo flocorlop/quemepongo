@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/profiles"></ion-back-button>
     </ion-buttons>
-    <ion-title>Edit profile</ion-title>
+    <ion-title>Editar perfil</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="deleteProfile()">
         <ion-icon name="trash" slot="icon-only"></ion-icon>
@@ -23,20 +23,34 @@
         #fileUpload
       />
 
-      <ion-input placeholder="New username" type="text" #user></ion-input>
-      <ion-input placeholder="New name" type="text" #name></ion-input>
-      <ion-input placeholder="New email" type="text" #mail></ion-input>
+      <ion-input
+        placeholder="Nuevo nombre de usuario"
+        type="text"
+        #user
+      ></ion-input>
+      <ion-input placeholder="Nuevo nombre" type="text" #name></ion-input>
+      <ion-input
+        placeholder="Nuevo correo electrónico"
+        type="text"
+        #mail
+      ></ion-input>
 
       <ion-button
         color="success"
         expand="block"
         (click)="saveEditProfile(user, name, mail)"
       >
-        Save
+        Guardar
       </ion-button>
       <ion-button color="new" expand="block" (click)="cancelEdit()">
-        Cancel
+        Cancelar
       </ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>FCL 2022</ion-title>
+  </ion-toolbar>
+</ion-footer>
