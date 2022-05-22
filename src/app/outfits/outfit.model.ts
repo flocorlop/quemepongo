@@ -4,4 +4,5 @@ export interface Outfit {
     title: string;
     imageURL: string;
     description: string;
+    visible: bigint;
 }

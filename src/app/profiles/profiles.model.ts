@@ -3,4 +3,6 @@ export interface Profile {
     username: string;
     email: string;
     id: bigint;
+    imageURL: string;
+    visible: bigint;
 }
