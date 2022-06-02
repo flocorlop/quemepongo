@@ -1,12 +1,6 @@
-from datetime import datetime
-from turtle import title
 from flask import Flask, jsonify, request
-import json
 from logging import exception
 from Models import db, Outfits, Profiles
-from sqlalchemy import func
-from sqlalchemy import select
-from sqlalchemy import table, column
 
 #region imports predictions:
 import base64
@@ -14,10 +8,7 @@ import numpy as np
 import io
 from PIL import Image
 import keras, tensorflow as tf
-from keras import backend as K
-from keras.models import Sequential
 from keras.models import load_model
-from keras.preprocessing.image import ImageDataGenerator
 from keras.preprocessing.image import img_to_array
 import re
 #endregion
@@ -25,8 +16,9 @@ import re
 app = Flask(__name__)
 
 #config bbdd
-app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///C:\\bbdd_tfg\\melopongo.db"
+app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///melopongo.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.secret_key='\xf9\xef*`\xe1\x1b\xca\x7f\x9c?\xa3\x00C\xb9\xdb\xfew\x10\xedI\xed\x03\xeb\x9e'
 db.init_app(app)
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
