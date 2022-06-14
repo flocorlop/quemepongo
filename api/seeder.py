@@ -1,6 +1,6 @@
 import sqlite3 as sql
 
-DB_PATH = 'C:\\bbdd_tfg\\melopongo.db'
+DB_PATH = 'melopongo.db'
 
 def createDB():
     conn = sql.connect(DB_PATH)
